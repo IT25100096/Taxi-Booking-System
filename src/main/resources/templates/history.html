@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Bookings</title>
+</head>
+<body>
+<h2>My Bookings</h2>
+<a href="/book">Book New Ride</a>
+<br><br>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Pickup</th>
+        <th>Drop-off</th>
+        <th>Type</th>
+        <th>Fare</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="b : ${bookings}">
+        <td th:text="${b.passenger}"></td>
+        <td th:text="${b.pickup}"></td>
+        <td th:text="${b.dropoff}"></td>
+        <td th:text="${b.rideType}"></td>
+        <td th:text="${b.fare}"></td>
+        <td th:text="${b.status}"></td>
+        <td><a th:href="@{/cancel/{id}(id=${b.id})}">Cancel</a></td>
+    </tr>
+</table>
+</body>
+</html>

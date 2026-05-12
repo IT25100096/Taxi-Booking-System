@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book a Ride</title>
+</head>
+<body>
+<h2>Book a Ride</h2>
+<form th:action="@{/book}" th:object="${booking}" method="post">
+    <p>Your Name: <input th:field="*{passenger}" /></p>
+    <p>Pickup Location: <input th:field="*{pickup}" /></p>
+    <p>Drop-off Location: <input th:field="*{dropoff}" /></p>
+    <p>Ride Type:
+        <select th:field="*{rideType}">
+            <option value="instant">Instant Ride</option>
+            <option value="scheduled">Scheduled Ride</option>
+        </select>
+    </p>
+    <button type="submit">Book Now</button>
+</form>
+</body>
+</html>
