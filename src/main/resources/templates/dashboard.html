@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand fw-bold">🚖 TaxiAdmin Panel</span>
+    <div>
+        <a href="/" class="btn btn-outline-light btn-sm me-2">Dashboard</a>
+        <a href="/fleet" class="btn btn-outline-light btn-sm me-2">Fleet</a>
+        <a href="/logs" class="btn btn-outline-light btn-sm">Logs</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Welcome, Admin 👋</h2>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body text-center">
+                    <h3 th:text="${driverCount}">0</h3>
+                    <p class="mb-0">Total Drivers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body text-center">
+                    <h3 th:text="${vehicleCount}">0</h3>
+                    <p class="mb-0">Total Vehicles</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-warning shadow">
+                <div class="card-body text-center">
+                    <h3 th:text="${logCount}">0</h3>
+                    <p class="mb-0">Total Actions Logged</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="/fleet" class="btn btn-dark me-3">Manage Fleet</a>
+        <a href="/logs" class="btn btn-secondary">View Logs</a>
+    </div>
+</div>
+
+</body>
+</html>
