@@ -90,9 +90,9 @@
                     <span th:if="${driver.status != 'active'}" class="badge-suspended" th:text="${driver.status}"></span>
                 </td>
                 <td>
-                    <a th:href="@{/driver/edit/{id}(id=${driver.id})}" class="btn-edit">✏️ Edit</a>
+                    <a th:href="@{/driver/edit/{id}(id=${driver.id})}" class="btn-edit">Edit</a>
                     <a th:href="@{/driver/delete/{id}(id=${driver.id})}" class="btn-del"
-                       onclick="return confirm('Are you sure?')">🗑️ Delete</a>
+                       onclick="return confirm('Are you sure?')">Delete</a>
                 </td>
             </tr>
             </tbody>
@@ -137,6 +137,7 @@
                 <th>Model</th>
                 <th>Plate Number</th>
                 <th>Type</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -146,6 +147,11 @@
                 <td th:text="${vehicle.model}"></td>
                 <td th:text="${vehicle.plateNumber}"></td>
                 <td th:text="${vehicle.vehicleType}"></td>
+                <td>
+                    <a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}" class="btn-edit">Edit</a>
+                    <a th:href="@{/vehicle/delete/{id}(id=${vehicle.id})}" class="btn-del"
+                       onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
             </tr>
             </tbody>
         </table>

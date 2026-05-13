@@ -45,6 +45,12 @@ public class AdminService {
     public void deleteDriver(int id) {
         Driver driver = getDriverById(id);
         if (driver != null) {
+            List<Vehicle> vehicles = vehicleRepository.findAll();
+            for (Vehicle v : vehicles) {
+                if (v.getDriverId() == id) {
+                    vehicleRepository.deleteById(v.getId());
+                }
+            }
             adminLogRepository.save(new AdminLog("Deleted driver: " + driver.getName()));
             driverRepository.deleteById(id);
         }
@@ -60,12 +66,29 @@ public class AdminService {
         adminLogRepository.save(new AdminLog("Added vehicle: " + vehicle.getPlateNumber()));
     }
 
+    public Vehicle getVehicleById(int id) {
+        return vehicleRepository.findById(id).orElse(null);
+    }
+
+    public void updateVehicle(Vehicle vehicle) {
+        vehicleRepository.save(vehicle);
+        adminLogRepository.save(new AdminLog("Updated vehicle: " + vehicle.getPlateNumber()));
+    }
+
+    public void deleteVehicle(int id) {
+        Vehicle vehicle = getVehicleById(id);
+        if (vehicle != null) {
+            adminLogRepository.save(new AdminLog("Deleted vehicle: " + vehicle.getPlateNumber()));
+            vehicleRepository.deleteById(id);
+        }
+    }
+
     // Logs
     public List<AdminLog> getAllLogs() {
         return adminLogRepository.findAll();
     }
 
-    // Stats for dashboard
+    // Stats
     public long countDrivers() { return driverRepository.count(); }
     public long countVehicles() { return vehicleRepository.count(); }
     public long countLogs() { return adminLogRepository.count(); }
