@@ -2,30 +2,107 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>My Bookings</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #1a1a1a;
+            font-family: Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        h2 { color: #f5c518; font-size: 28px; }
+        .btn-new {
+            background-color: #f5c518;
+            color: #1a1a1a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .btn-new:hover { background-color: #ffd700; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th {
+            background-color: #f5c518;
+            color: #1a1a1a;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 14px;
+        }
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #3a3a3a;
+            font-size: 14px;
+            color: #ddd;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #333; }
+        .status-pending {
+            background-color: #f59e0b;
+            color: #1a1a1a;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn-cancel {
+            background: none;
+            border: 1.5px solid #ef4444;
+            color: #ef4444;
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn-cancel:hover { background-color: #ef4444; color: white; }
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-<h2>My Bookings</h2>
-<a href="/book">Book New Ride</a>
-<br><br>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Pickup</th>
-        <th>Drop-off</th>
-        <th>Type</th>
-        <th>Fare</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-    <tr th:each="b : ${bookings}">
-        <td th:text="${b.passenger}"></td>
-        <td th:text="${b.pickup}"></td>
-        <td th:text="${b.dropoff}"></td>
-        <td th:text="${b.rideType}"></td>
-        <td th:text="${b.fare}"></td>
-        <td th:text="${b.status}"></td>
-        <td><a th:href="@{/cancel/{id}(id=${b.id})}">Cancel</a></td>
-    </tr>
-</table>
+<div class="container">
+    <div class="header">
+        <h2>🚖 My Bookings</h2>
+        <a href="/book" class="btn-new">+ Book New Ride</a>
+    </div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Pickup</th>
+            <th>Drop-off</th>
+            <th>Type</th>
+            <th>Fare (LKR)</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="b : ${bookings}">
+            <td th:text="${b.passenger}"></td>
+            <td th:text="${b.pickup}"></td>
+            <td th:text="${b.dropoff}"></td>
+            <td th:text="${b.rideType}"></td>
+            <td th:text="${b.fare}"></td>
+            <td><span class="status-pending" th:text="${b.status}"></span></td>
+            <td><a class="btn-cancel" th:href="@{/cancel/{id}(id=${b.id})}">Cancel</a></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
