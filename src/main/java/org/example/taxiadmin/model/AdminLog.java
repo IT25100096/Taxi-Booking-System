@@ -3,6 +3,7 @@ package org.example.taxiadmin.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+// Admin log model
 @Entity
 @Table(name = "admin_logs")
 public class AdminLog {
