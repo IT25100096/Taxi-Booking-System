@@ -4,134 +4,151 @@
     <meta charset="UTF-8">
     <title>Fleet Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #1a1a1a; color: #fff; }
+        .navbar { background-color: #f5c518 !important; }
+        .navbar-brand { color: #000 !important; font-size: 1.5rem; font-weight: 900; }
+        .nav-btn { background-color: #000; color: #f5c518 !important; border: none; border-radius: 8px; padding: 6px 16px; margin-left: 8px; font-weight: 600; text-decoration: none; }
+        .nav-btn:hover { background-color: #333; color: #f5c518 !important; }
+        .section-card { background-color: #2a2a2a; border-radius: 16px; padding: 24px; margin-bottom: 30px; border: 1px solid #f5c518; }
+        .section-title { color: #f5c518; font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; }
+        .form-control, .form-select { background-color: #1a1a1a; color: #fff; border: 1px solid #f5c518; border-radius: 8px; }
+        .form-control:focus, .form-select:focus { background-color: #1a1a1a; color: #fff; border-color: #f5c518; box-shadow: 0 0 0 0.2rem rgba(245,197,24,0.25); }
+        .form-control::placeholder { color: #888; }
+        .form-select option { background-color: #1a1a1a; color: #fff; }
+        .btn-add { background-color: #f5c518; color: #000; font-weight: 700; border: none; border-radius: 8px; padding: 10px 24px; width: 100%; }
+        .btn-add:hover { background-color: #e6a800; }
+        .custom-table { width: 100%; border-collapse: collapse; }
+        .custom-table thead tr th { background-color: #f5c518; color: #000; padding: 12px; text-align: left; }
+        .custom-table tbody tr { background-color: #1a1a1a; border-bottom: 1px solid #444; }
+        .custom-table tbody tr:hover { background-color: #2c2c2c; }
+        .custom-table tbody tr td { color: #fff; padding: 12px; }
+        .badge-active { background-color: #28a745; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
+        .badge-suspended { background-color: #dc3545; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
+        .btn-edit { background-color: #f5c518; color: #000; font-weight: 600; border: none; border-radius: 6px; padding: 4px 14px; text-decoration: none; }
+        .btn-edit:hover { background-color: #e6a800; }
+        .btn-del { background-color: #dc3545; color: #fff; font-weight: 600; border: none; border-radius: 6px; padding: 4px 14px; text-decoration: none; margin-left: 4px; }
+        .btn-del:hover { background-color: #bb2d3b; }
+        .page-title { color: #f5c518; font-weight: 900; font-size: 1.8rem; }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<nav class="navbar navbar-dark bg-dark px-4">
-    <span class="navbar-brand fw-bold">🚖 TaxiAdmin Panel</span>
+<nav class="navbar px-4 py-3">
+    <span class="navbar-brand">🚖 TaxiAdmin Panel</span>
     <div>
-        <a href="/" class="btn btn-outline-light btn-sm me-2">Dashboard</a>
-        <a href="/fleet" class="btn btn-outline-light btn-sm me-2">Fleet</a>
-        <a href="/logs" class="btn btn-outline-light btn-sm">Logs</a>
+        <a href="/" class="nav-btn">🏠 Dashboard</a>
+        <a href="/fleet" class="nav-btn">🚗 Fleet</a>
+        <a href="/logs" class="nav-btn">📋 Logs</a>
     </div>
 </nav>
 
 <div class="container mt-4">
+    <h2 class="page-title mb-4">🚗 Fleet Management</h2>
 
     <!-- Add Driver Form -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-primary text-white">Add New Driver</div>
-        <div class="card-body">
-            <form th:action="@{/driver/add}" th:object="${newDriver}" method="post" class="row g-3">
-                <div class="col-md-3">
-                    <input type="text" th:field="*{name}" class="form-control" placeholder="Full Name" required/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" th:field="*{phone}" class="form-control" placeholder="Phone Number" required/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" th:field="*{licenseNumber}" class="form-control" placeholder="License Number" required/>
-                </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary w-100">Add Driver</button>
-                </div>
-            </form>
-        </div>
+    <div class="section-card">
+        <div class="section-title">➕ Add New Driver</div>
+        <form th:action="@{/driver/add}" th:object="${newDriver}" method="post" class="row g-3">
+            <div class="col-md-3">
+                <input type="text" th:field="*{name}" class="form-control" placeholder="Full Name" required/>
+            </div>
+            <div class="col-md-3">
+                <input type="text" th:field="*{phone}" class="form-control" placeholder="Phone Number" required/>
+            </div>
+            <div class="col-md-3">
+                <input type="text" th:field="*{licenseNumber}" class="form-control" placeholder="License Number" required/>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn-add">Add Driver</button>
+            </div>
+        </form>
     </div>
 
     <!-- Drivers Table -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-dark text-white">All Drivers</div>
-        <div class="card-body">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>License</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="driver : ${drivers}">
-                    <td th:text="${driver.id}"></td>
-                    <td th:text="${driver.name}"></td>
-                    <td th:text="${driver.phone}"></td>
-                    <td th:text="${driver.licenseNumber}"></td>
-                    <td>
-                            <span th:text="${driver.status}"
-                                  th:class="${driver.status == 'active'} ? 'badge bg-success' : 'badge bg-danger'">
-                            </span>
-                    </td>
-                    <td>
-                        <a th:href="@{/driver/edit/{id}(id=${driver.id})}"
-                           class="btn btn-warning btn-sm me-1">Edit</a>
-                        <a th:href="@{/driver/delete/{id}(id=${driver.id})}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="section-card">
+        <div class="section-title">🧑‍✈️ All Drivers</div>
+        <table class="custom-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>License</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="driver : ${drivers}">
+                <td th:text="${driver.id}"></td>
+                <td th:text="${driver.name}"></td>
+                <td th:text="${driver.phone}"></td>
+                <td th:text="${driver.licenseNumber}"></td>
+                <td>
+                    <span th:if="${driver.status == 'active'}" class="badge-active">active</span>
+                    <span th:if="${driver.status != 'active'}" class="badge-suspended" th:text="${driver.status}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/driver/edit/{id}(id=${driver.id})}" class="btn-edit">✏️ Edit</a>
+                    <a th:href="@{/driver/delete/{id}(id=${driver.id})}" class="btn-del"
+                       onclick="return confirm('Are you sure?')">🗑️ Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
     <!-- Add Vehicle Form -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-success text-white">Add New Vehicle</div>
-        <div class="card-body">
-            <form th:action="@{/vehicle/add}" th:object="${newVehicle}" method="post" class="row g-3">
-                <div class="col-md-3">
-                    <input type="number" th:field="*{driverId}" class="form-control" placeholder="Driver ID" required/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" th:field="*{model}" class="form-control" placeholder="Car Model" required/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" th:field="*{plateNumber}" class="form-control" placeholder="Plate Number" required/>
-                </div>
-                <div class="col-md-3">
-                    <select th:field="*{vehicleType}" class="form-select">
-                        <option value="Sedan">Sedan</option>
-                        <option value="SUV">SUV</option>
-                        <option value="Van">Van</option>
-                        <option value="Tuk-Tuk">Tuk-Tuk</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-success w-100">Add Vehicle</button>
-                </div>
-            </form>
-        </div>
+    <div class="section-card">
+        <div class="section-title">➕ Add New Vehicle</div>
+        <form th:action="@{/vehicle/add}" th:object="${newVehicle}" method="post" class="row g-3">
+            <div class="col-md-3">
+                <input type="number" th:field="*{driverId}" class="form-control" placeholder="Driver ID" required/>
+            </div>
+            <div class="col-md-3">
+                <input type="text" th:field="*{model}" class="form-control" placeholder="Car Model" required/>
+            </div>
+            <div class="col-md-3">
+                <input type="text" th:field="*{plateNumber}" class="form-control" placeholder="Plate Number" required/>
+            </div>
+            <div class="col-md-3">
+                <select th:field="*{vehicleType}" class="form-select">
+                    <option value="Sedan">Sedan</option>
+                    <option value="SUV">SUV</option>
+                    <option value="Van">Van</option>
+                    <option value="Tuk-Tuk">Tuk-Tuk</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn-add">Add Vehicle</button>
+            </div>
+        </form>
     </div>
 
     <!-- Vehicles Table -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-dark text-white">All Vehicles</div>
-        <div class="card-body">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Driver ID</th>
-                    <th>Model</th>
-                    <th>Plate Number</th>
-                    <th>Type</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="vehicle : ${vehicles}">
-                    <td th:text="${vehicle.id}"></td>
-                    <td th:text="${vehicle.driverId}"></td>
-                    <td th:text="${vehicle.model}"></td>
-                    <td th:text="${vehicle.plateNumber}"></td>
-                    <td th:text="${vehicle.vehicleType}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="section-card">
+        <div class="section-title">🚗 All Vehicles</div>
+        <table class="custom-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Driver ID</th>
+                <th>Model</th>
+                <th>Plate Number</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vehicle : ${vehicles}">
+                <td th:text="${vehicle.id}"></td>
+                <td th:text="${vehicle.driverId}"></td>
+                <td th:text="${vehicle.model}"></td>
+                <td th:text="${vehicle.plateNumber}"></td>
+                <td th:text="${vehicle.vehicleType}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
