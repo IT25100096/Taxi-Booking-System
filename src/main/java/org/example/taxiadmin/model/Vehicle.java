@@ -2,6 +2,7 @@ package org.example.taxiadmin.model;
 
 import jakarta.persistence.*;
 
+// Vehicle entity model
 @Entity
 @Table(name = "vehicles")
 public class Vehicle {
