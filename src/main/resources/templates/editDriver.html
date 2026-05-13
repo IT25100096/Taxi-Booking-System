@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Driver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand fw-bold">🚖 TaxiAdmin Panel</span>
+    <div>
+        <a href="/" class="btn btn-outline-light btn-sm me-2">Dashboard</a>
+        <a href="/fleet" class="btn btn-outline-light btn-sm me-2">Fleet</a>
+        <a href="/logs" class="btn btn-outline-light btn-sm">Logs</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card shadow" style="max-width: 600px; margin: auto;">
+        <div class="card-header bg-warning text-dark fw-bold">
+            Edit Driver Details
+        </div>
+        <div class="card-body">
+            <form th:action="@{/driver/update}" th:object="${driver}" method="post">
+
+                <input type="hidden" th:field="*{id}"/>
+
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" th:field="*{phone}" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">License Number</label>
+                    <input type="text" th:field="*{licenseNumber}" class="form-control" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select th:field="*{status}" class="form-select">
+                        <option value="active">Active</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning">Update Driver</button>
+                    <a href="/fleet" class="btn btn-secondary">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
