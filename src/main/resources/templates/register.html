@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RideX - Register</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .logo span { color: #f5c842; }
+
+        .subtitle {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .role-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #0a0a0a;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+
+        .role-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #aaaaaa;
+            transition: all 0.2s;
+        }
+
+        .role-btn.active {
+            background: #f5c842;
+            color: #000;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #f5c842;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 20px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaaaaa;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #333333;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border 0.2s;
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+
+        input:focus, select:focus {
+            border-color: #f5c842;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #f5c842;
+            color: #000;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .btn:hover { opacity: 0.9; }
+
+        .bottom-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaaaaa;
+        }
+
+        .bottom-link a {
+            color: #f5c842;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .error {
+            background: #fff0f0;
+            border: 1px solid #ffcccc;
+            color: #cc0000;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">Ride<span>X</span></div>
+    <div class="subtitle">Create your account</div>
+
+    <!-- Error message -->
+    <div class="error" th:if="${error}" th:text="${error}"></div>
+
+    <!-- Role Toggle -->
+    <div class="role-toggle">
+        <button type="button" class="role-btn active"
+                id="btn-passenger" onclick="setRole('PASSENGER')">
+            Passenger
+        </button>
+        <button type="button" class="role-btn"
+                id="btn-driver" onclick="setRole('DRIVER')">
+            Driver
+        </button>
+    </div>
+
+    <!-- Register Form -->
+    <form action="/register" method="post">
+        <input type="hidden" id="roleInput" name="role" value="PASSENGER"/>
+
+        <!-- Personal Info -->
+        <div class="section-title">Personal Information</div>
+
+        <label>Full Name</label>
+        <input type="text" name="fullName"
+               placeholder="Your full name" required/>
+
+        <label>Email Address</label>
+        <input type="email" name="email"
+               placeholder="you@example.com" required/>
+
+        <label>Phone Number</label>
+        <input type="tel" name="phone"
+               placeholder="+94 77 123 4567" required/>
+
+        <label>Password</label>
+        <input type="password" name="password"
+               placeholder="Min. 6 characters" required/>
+
+        <!-- Passenger Section -->
+        <div id="passenger-section">
+            <div class="section-title">Booking Preferences</div>
+
+            <label>Home Address</label>
+            <input type="text" name="homeAddress"
+                   placeholder="123 Galle Road, Colombo"/>
+
+            <label>Default Payment</label>
+            <select name="paymentMethod">
+                <option value="CASH">Cash</option>
+                <option value="CARD">Card</option>
+                <option value="WALLET">Wallet</option>
+            </select>
+        </div>
+
+        <!-- Driver Section -->
+        <div id="driver-section" class="hidden">
+            <div class="section-title">Driver Details</div>
+
+            <label>License Number</label>
+            <input type="text" name="licenseNumber"
+                   placeholder="B1234567"/>
+
+            <label>Vehicle Plate</label>
+            <input type="text" name="vehiclePlate"
+                   placeholder="CAB-1234"/>
+
+            <div class="grid-2">
+                <div>
+                    <label>Vehicle Model</label>
+                    <input type="text" name="vehicleModel"
+                           placeholder="Toyota Prius"/>
+                </div>
+                <div>
+                    <label>Color</label>
+                    <input type="text" name="vehicleColor"
+                           placeholder="White"/>
+                </div>
+            </div>
+
+            <label>Vehicle Year</label>
+            <select name="vehicleYear">
+                <option value="">Select Year</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+    </form>
+
+    <div class="bottom-link">
+        Already have an account?
+        <a href="/login">Sign in</a>
+    </div>
+</div>
+
+<script>
+    // Fill year dropdown
+    const sel = document.querySelector('select[name="vehicleYear"]');
+    for (let y = 2025; y >= 2000; y--) {
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y;
+        sel.appendChild(opt);
+    }
+
+    // Switch between passenger and driver forms
+    function setRole(role) {
+        document.getElementById('roleInput').value = role;
+        document.getElementById('btn-passenger')
+            .classList.toggle('active', role === 'PASSENGER');
+        document.getElementById('btn-driver')
+            .classList.toggle('active', role === 'DRIVER');
+        document.getElementById('passenger-section')
+            .classList.toggle('hidden', role !== 'PASSENGER');
+        document.getElementById('driver-section')
+            .classList.toggle('hidden', role !== 'DRIVER');
+    }
+</script>
+
+</body>
+</html>
