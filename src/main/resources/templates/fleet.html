@@ -3,118 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <title>Fleet Management</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        body.dark { background-color: #1a1a1a; color: #fff; }
-        body.light { background-color: #f5f5f5; color: #000; }
-        .navbar { background-color: #f5c518 !important; }
-        .navbar-brand { color: #000 !important; font-size: 1.5rem; font-weight: 900; }
-        .nav-btn { background-color: #000; color: #f5c518 !important; border: none; border-radius: 8px; padding: 6px 16px; margin-left: 8px; font-weight: 600; text-decoration: none; }
-        .nav-btn:hover { background-color: #333; color: #f5c518 !important; }
 
-        /* Dark mode styles */
-        body.dark .section-card { background-color: #2a2a2a; border: 1px solid #f5c518; }
-        body.dark .form-control, body.dark .form-select { background-color: #1a1a1a; color: #fff; border: 1px solid #f5c518; }
-        body.dark .form-control::placeholder { color: #888; }
-        body.dark .form-select option { background-color: #1a1a1a; color: #fff; }
-        body.dark .custom-table tbody tr { background-color: #1a1a1a; border-bottom: 1px solid #444; }
-        body.dark .custom-table tbody tr:hover { background-color: #2c2c2c; }
-        body.dark .custom-table tbody tr td { color: #fff; }
-        body.dark .search-box { background-color: #1a1a1a; color: #fff; border: 1px solid #f5c518; }
-        body.dark .search-box::placeholder { color: #888; }
-
-        /* Light mode styles */
-        body.light .section-card { background-color: #ffffff; border: 1px solid #f5c518; }
-        body.light .form-control, body.light .form-select { background-color: #fff; color: #000; border: 1px solid #f5c518; }
-        body.light .form-control::placeholder { color: #aaa; }
-        body.light .form-select option { background-color: #fff; color: #000; }
-        body.light .custom-table tbody tr { background-color: #fff; border-bottom: 1px solid #ddd; }
-        body.light .custom-table tbody tr:hover { background-color: #fffbe6; }
-        body.light .custom-table tbody tr td { color: #000; }
-        body.light .search-box { background-color: #fff; color: #000; border: 1px solid #f5c518; }
-        body.light .search-box::placeholder { color: #aaa; }
-
-        /* Common styles */
-        .section-card { border-radius: 16px; padding: 24px; margin-bottom: 30px; }
-        .section-title { color: #f5c518; font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; }
-        .form-control, .form-select { border-radius: 8px; }
-        .form-control:focus, .form-select:focus { border-color: #f5c518; box-shadow: 0 0 0 0.2rem rgba(245,197,24,0.25); }
-        .btn-add { background-color: #f5c518; color: #000; font-weight: 700; border: none; border-radius: 8px; padding: 10px 24px; width: 100%; }
-        .btn-add:hover { background-color: #e6a800; }
-        .custom-table { width: 100%; border-collapse: collapse; }
-        .custom-table thead tr th { background-color: #f5c518; color: #000; padding: 12px; text-align: left; }
-        .custom-table tbody tr td { padding: 12px; }
-        .badge-active { background-color: #28a745; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
-        .badge-suspended { background-color: #dc3545; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; }
-        .btn-edit { background-color: #f5c518; color: #000; font-weight: 600; border: none; border-radius: 6px; padding: 4px 14px; text-decoration: none; }
-        .btn-edit:hover { background-color: #e6a800; }
-        .btn-del { background-color: #dc3545; color: #fff; font-weight: 600; border: none; border-radius: 6px; padding: 4px 14px; text-decoration: none; margin-left: 4px; }
-        .btn-del:hover { background-color: #bb2d3b; }
-        .page-title { color: #f5c518; font-weight: 900; font-size: 1.8rem; }
-        .search-box { border-radius: 8px; padding: 10px 16px; width: 100%; margin-bottom: 16px; font-size: 1rem; }
-        .search-box:focus { outline: none; box-shadow: 0 0 0 0.2rem rgba(245,197,24,0.25); }
-        .no-results { color: #888; text-align: center; padding: 20px; display: none; }
-
-        /* Toggle button */
-        .toggle-mode-btn {
-            background-color: #000;
-            color: #f5c518;
-            border: 2px solid #f5c518;
-            border-radius: 20px;
-            padding: 6px 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-left: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            transition: 0.3s;
         }
-        .toggle-mode-btn:hover {
+
+        .navbar {
+            background-color: #f5c518 !important;
+        }
+
+        .navbar-brand {
+            color: #000 !important;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .nav-btn {
+            background-color: #000;
+            color: #f5c518 !important;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 16px;
+            margin-left: 8px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background-color: #333;
+            color: #f5c518 !important;
+        }
+
+        .section-card {
+            background-color: #2a2a2a;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 1px solid #f5c518;
+        }
+
+        .section-title {
+            color: #f5c518;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1px solid #f5c518;
+            border-radius: 8px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #1a1a1a;
+            color: #fff;
+            border-color: #f5c518;
+            box-shadow: 0 0 0 0.2rem rgba(245,197,24,0.25);
+        }
+
+        .form-control::placeholder {
+            color: #888;
+        }
+
+        .form-select option {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .btn-add {
             background-color: #f5c518;
             color: #000;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            width: 100%;
         }
+
+        .btn-add:hover {
+            background-color: #e6a800;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-table thead tr th {
+            background-color: #f5c518;
+            color: #000;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .custom-table tbody tr {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #444;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #2c2c2c;
+        }
+
+        .custom-table tbody tr td {
+            color: #fff;
+            padding: 12px;
+        }
+
+        .badge-active {
+            background-color: #28a745;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .badge-suspended {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .btn-edit {
+            background-color: #f5c518;
+            color: #000;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 14px;
+            text-decoration: none;
+        }
+
+        .btn-del {
+            background-color: #dc3545;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 14px;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+
+        .page-title {
+            color: #f5c518;
+            font-weight: 900;
+            font-size: 1.8rem;
+        }
+
+        /* LIGHT MODE */
+
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #000;
+        }
+
+        body.light-mode .section-card {
+            background-color: white;
+            color: black;
+        }
+
+        body.light-mode .custom-table tbody tr {
+            background-color: white;
+        }
+
+        body.light-mode .custom-table tbody tr td {
+            color: black;
+        }
+
+        body.light-mode .form-control,
+        body.light-mode .form-select {
+            background-color: white;
+            color: black;
+        }
+
     </style>
 </head>
-<body class="dark">
 
-<nav class="navbar px-4 py-3 d-flex justify-content-between align-items-center">
+<body>
+
+<nav class="navbar px-4 py-3">
+
     <span class="navbar-brand">🚖 TaxiAdmin Panel</span>
+
     <div>
         <a href="/" class="nav-btn">🏠 Dashboard</a>
         <a href="/fleet" class="nav-btn">🚗 Fleet</a>
         <a href="/logs" class="nav-btn">📋 Logs</a>
-        <button class="toggle-mode-btn" onclick="toggleMode()" id="modeBtn">☀️ Light Mode</button>
+
+        <button onclick="toggleTheme()" class="nav-btn">
+            🌙 Mode
+        </button>
     </div>
+
 </nav>
 
 <div class="container mt-4">
-    <h2 class="page-title mb-4">🚗 Fleet Management</h2>
 
-    <!-- Add Driver Form -->
+    <h2 class="page-title mb-4">
+        🚗 Fleet Management
+    </h2>
+
+    <!-- ADD DRIVER -->
+
     <div class="section-card">
-        <div class="section-title">➕ Add New Driver</div>
-        <form th:action="@{/driver/add}" th:object="${newDriver}" method="post" class="row g-3">
+
+        <div class="section-title">
+            ➕ Add New Driver
+        </div>
+
+        <form th:action="@{/driver/add}"
+              th:object="${newDriver}"
+              method="post"
+              class="row g-3">
+
             <div class="col-md-3">
-                <input type="text" th:field="*{name}" class="form-control" placeholder="Full Name" required/>
+                <input type="text"
+                       th:field="*{name}"
+                       class="form-control"
+                       placeholder="Full Name"
+                       required/>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{phone}" class="form-control" placeholder="Phone Number" required/>
+                <input type="text"
+                       th:field="*{phone}"
+                       class="form-control"
+                       placeholder="Phone Number"
+                       required/>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{licenseNumber}" class="form-control" placeholder="License Number" required/>
+                <input type="text"
+                       th:field="*{licenseNumber}"
+                       class="form-control"
+                       placeholder="License Number"
+                       required/>
             </div>
+
             <div class="col-md-3">
-                <button type="submit" class="btn-add">Add Driver</button>
+                <button type="submit" class="btn-add">
+                    Add Driver
+                </button>
             </div>
+
         </form>
+
     </div>
 
-    <!-- Drivers Table -->
+    <!-- DRIVER TABLE -->
+
     <div class="section-card">
-        <div class="section-title">🧑‍✈️ All Drivers</div>
-        <input type="text" class="search-box" id="driverSearch"
-               onkeyup="searchTable('driverSearch', 'driverTable', 'driverNoResults')"
-               placeholder="🔍 Search drivers by name, phone or license..."/>
-        <table class="custom-table" id="driverTable">
+
+        <div class="section-title">
+            🧑‍✈️ All Drivers
+        </div>
+
+        <table class="custom-table">
+
             <thead>
             <tr>
                 <th>ID</th>
@@ -125,42 +283,93 @@
                 <th>Actions</th>
             </tr>
             </thead>
+
             <tbody>
+
             <tr th:each="driver : ${drivers}">
+
                 <td th:text="${driver.id}"></td>
                 <td th:text="${driver.name}"></td>
                 <td th:text="${driver.phone}"></td>
                 <td th:text="${driver.licenseNumber}"></td>
+
                 <td>
-                    <span th:if="${driver.status == 'active'}" class="badge-active">active</span>
-                    <span th:if="${driver.status != 'active'}" class="badge-suspended" th:text="${driver.status}"></span>
+                    <span th:if="${driver.status == 'active'}"
+                          class="badge-active">
+                        active
+                    </span>
+
+                    <span th:if="${driver.status != 'active'}"
+                          class="badge-suspended"
+                          th:text="${driver.status}">
+                    </span>
                 </td>
+
                 <td>
-                    <a th:href="@{/driver/edit/{id}(id=${driver.id})}" class="btn-edit">Edit</a>
-                    <a th:href="@{/driver/delete/{id}(id=${driver.id})}" class="btn-del"
-                       onclick="return confirm('Are you sure?')">Delete</a>
+
+                    <a th:href="@{/driver/edit/{id}(id=${driver.id})}"
+                       class="btn-edit">
+                        Edit
+                    </a>
+
+                    <a th:href="@{/driver/delete/{id}(id=${driver.id})}"
+                       class="btn-del"
+                       onclick="return confirm('Are you sure?')">
+                        Delete
+                    </a>
+
                 </td>
+
             </tr>
+
             </tbody>
+
         </table>
-        <div class="no-results" id="driverNoResults">No drivers found.</div>
+
     </div>
 
-    <!-- Add Vehicle Form -->
+    <!-- ADD VEHICLE -->
+
     <div class="section-card">
-        <div class="section-title">➕ Add New Vehicle</div>
-        <form th:action="@{/vehicle/add}" th:object="${newVehicle}" method="post" class="row g-3">
+
+        <div class="section-title">
+            ➕ Add New Vehicle
+        </div>
+
+        <form th:action="@{/vehicle/add}"
+              th:object="${newVehicle}"
+              method="post"
+              class="row g-3">
+
             <div class="col-md-3">
-                <input type="number" th:field="*{driverId}" class="form-control" placeholder="Driver ID" required/>
+                <input type="number"
+                       th:field="*{driverId}"
+                       class="form-control"
+                       placeholder="Driver ID"
+                       required/>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{model}" class="form-control" placeholder="Car Model" required/>
+                <input type="text"
+                       th:field="*{model}"
+                       class="form-control"
+                       placeholder="Car Model"
+                       required/>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{plateNumber}" class="form-control" placeholder="Plate Number" required/>
+                <input type="text"
+                       th:field="*{plateNumber}"
+                       class="form-control"
+                       placeholder="Plate Number"
+                       required/>
             </div>
+
             <div class="col-md-3">
-                <select th:field="*{vehicleType}" class="form-select">
+
+                <select th:field="*{vehicleType}"
+                        class="form-select">
+
                     <option value="Sedan">Sedan</option>
                     <option value="SUV">SUV</option>
                     <option value="Van">Van</option>
@@ -168,21 +377,43 @@
                     <option value="Motorcycle">Motorcycle</option>
                     <option value="Minibus">Minibus</option>
                     <option value="Luxury">Luxury Car</option>
+
                 </select>
+
             </div>
+
             <div class="col-md-3">
-                <button type="submit" class="btn-add">Add Vehicle</button>
+                <button type="submit" class="btn-add">
+                    Add Vehicle
+                </button>
             </div>
+
         </form>
+
     </div>
 
-    <!-- Vehicles Table -->
+    <!-- VEHICLE TABLE -->
+
     <div class="section-card">
-        <div class="section-title">🚗 All Vehicles</div>
-        <input type="text" class="search-box" id="vehicleSearch"
-               onkeyup="searchTable('vehicleSearch', 'vehicleTable', 'vehicleNoResults')"
-               placeholder="🔍 Search vehicles by model, plate or type..."/>
-        <table class="custom-table" id="vehicleTable">
+
+        <div class="section-title">
+            🚗 All Vehicles
+        </div>
+
+        <!-- SEARCH BAR -->
+
+        <div class="mb-3">
+
+            <input type="text"
+                   id="searchInput"
+                   class="form-control"
+                   placeholder="🔍 Search vehicles..."
+                   onkeyup="searchVehicle()">
+
+        </div>
+
+        <table class="custom-table">
+
             <thead>
             <tr>
                 <th>ID</th>
@@ -190,78 +421,71 @@
                 <th>Model</th>
                 <th>Plate Number</th>
                 <th>Type</th>
-                <th>Status</th>
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
+
+            <tbody id="vehicleTable">
+
             <tr th:each="vehicle : ${vehicles}">
+
                 <td th:text="${vehicle.id}"></td>
                 <td th:text="${vehicle.driverId}"></td>
                 <td th:text="${vehicle.model}"></td>
                 <td th:text="${vehicle.plateNumber}"></td>
                 <td th:text="${vehicle.vehicleType}"></td>
+
                 <td>
-                    <span th:if="${vehicle.status == 'active'}" class="badge-active">active</span>
-                    <span th:if="${vehicle.status != 'active'}" class="badge-suspended" th:text="${vehicle.status}"></span>
+
+                    <a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}"
+                       class="btn-edit">
+                        Edit
+                    </a>
+
+                    <a th:href="@{/vehicle/delete/{id}(id=${vehicle.id})}"
+                       class="btn-del"
+                       onclick="return confirm('Are you sure?')">
+                        Delete
+                    </a>
+
                 </td>
-                <td>
-                    <a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}" class="btn-edit">Edit</a>
-                    <a th:href="@{/vehicle/delete/{id}(id=${vehicle.id})}" class="btn-del"
-                       onclick="return confirm('Are you sure?')">Delete</a>
-                </td>
+
             </tr>
+
             </tbody>
+
         </table>
-        <div class="no-results" id="vehicleNoResults">No vehicles found.</div>
+
     </div>
 
 </div>
 
 <script>
-    function toggleMode() {
-        let body = document.body;
-        let btn = document.getElementById("modeBtn");
-        if (body.classList.contains("dark")) {
-            body.classList.remove("dark");
-            body.classList.add("light");
-            btn.textContent = "🌙 Dark Mode";
-            localStorage.setItem("theme", "light");
-        } else {
-            body.classList.remove("light");
-            body.classList.add("dark");
-            btn.textContent = "☀️ Light Mode";
-            localStorage.setItem("theme", "dark");
-        }
+
+    function toggleTheme() {
+        document.body.classList.toggle("light-mode");
     }
 
-    function searchTable(inputId, tableId, noResultsId) {
-        let input = document.getElementById(inputId).value.toLowerCase();
-        let table = document.getElementById(tableId);
-        let rows = table.getElementsByTagName("tr");
-        let visibleCount = 0;
-        for (let i = 1; i < rows.length; i++) {
-            let rowText = rows[i].innerText.toLowerCase();
-            if (rowText.includes(input)) {
-                rows[i].style.display = "";
-                visibleCount++;
+    function searchVehicle() {
+
+        let input = document.getElementById("searchInput").value.toLowerCase();
+
+        let rows = document.querySelectorAll("#vehicleTable tr");
+
+        rows.forEach(row => {
+
+            let text = row.innerText.toLowerCase();
+
+            if (text.includes(input)) {
+                row.style.display = "";
             } else {
-                rows[i].style.display = "none";
+                row.style.display = "none";
             }
-        }
-        let noResults = document.getElementById(noResultsId);
-        noResults.style.display = visibleCount === 0 ? "block" : "none";
+
+        });
+
     }
 
-    // Remember theme when page reloads
-    window.onload = function() {
-        let saved = localStorage.getItem("theme");
-        if (saved === "light") {
-            document.body.classList.remove("dark");
-            document.body.classList.add("light");
-            document.getElementById("modeBtn").textContent = "🌙 Dark Mode";
-        }
-    }
 </script>
 
 </body>
