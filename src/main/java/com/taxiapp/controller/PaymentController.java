@@ -16,7 +16,7 @@ public class PaymentController {
     private Connection getConn() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/taxidb", "root", "DileepaK@2003");
+                "jdbc:mysql://localhost:3306/taxi_system", "root", "root");
     }
 
     @GetMapping("/new")
@@ -98,19 +98,19 @@ public class PaymentController {
         ps.setString(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            model.addAttribute("paymentId",  rs.getString("payment_id"));
-            model.addAttribute("tripId",     rs.getString("trip_id"));
-            model.addAttribute("passengerId",rs.getString("passenger_id"));
-            model.addAttribute("distanceKm", rs.getDouble("distance_km"));
-            model.addAttribute("promoCode",  rs.getString("promo_code"));
-            model.addAttribute("discount",   rs.getDouble("discount_amount"));
-            model.addAttribute("total",      rs.getDouble("final_amount"));
-            model.addAttribute("type",       rs.getString("payment_type"));
-            model.addAttribute("status",     rs.getString("payment_status"));
-            model.addAttribute("createdAt",  rs.getString("created_at"));
+            model.addAttribute("paymentId",   rs.getString("payment_id"));
+            model.addAttribute("tripId",      rs.getString("trip_id"));
+            model.addAttribute("passengerId", rs.getString("passenger_id"));
+            model.addAttribute("distanceKm",  rs.getDouble("distance_km"));
+            model.addAttribute("promoCode",   rs.getString("promo_code"));
+            model.addAttribute("discount",    rs.getDouble("discount_amount"));
+            model.addAttribute("total",       rs.getDouble("final_amount"));
+            model.addAttribute("type",        rs.getString("payment_type"));
+            model.addAttribute("status",      rs.getString("payment_status"));
+            model.addAttribute("createdAt",   rs.getString("created_at"));
         }
         conn.close();
-        return "invoice";
+        return "payment-invoice";
     }
 
     @PostMapping("/update")
