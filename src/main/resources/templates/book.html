@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book a Ride</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #1a1a1a;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #2a2a2a;
+            padding: 40px;
+            border-radius: 12px;
+            width: 420px;
+            border: 2px solid #f5c518;
+        }
+        h2 {
+            color: #f5c518;
+            margin-bottom: 24px;
+            font-size: 26px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #f5c518;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1.5px solid #f5c518;
+            background-color: #1a1a1a;
+            color: white;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        select option {
+            background-color: #1a1a1a;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #f5c518;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #ffd700;
+        }
+        .link {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .link a {
+            color: #f5c518;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .link a:hover { text-decoration: underline; }
+        .logo { text-align: center; font-size: 36px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">🚖</div>
+    <h2>Book a Ride</h2>
+    <form th:action="@{/book}" th:object="${booking}" method="post">
+        <div class="form-group">
+            <label>Your Name</label>
+            <input th:field="*{passenger}" placeholder="Enter your name" />
+        </div>
+        <div class="form-group">
+            <label>Pickup Location</label>
+            <input th:field="*{pickup}" placeholder="Enter pickup location" />
+        </div>
+        <div class="form-group">
+            <label>Drop-off Location</label>
+            <input th:field="*{dropoff}" placeholder="Enter drop-off location" />
+        </div>
+        <div class="form-group">
+            <label>Ride Type</label>
+            <select th:field="*{rideType}">
+                <option value="instant">⚡ Instant Ride - LKR 250</option>
+                <option value="scheduled">🗓️ Scheduled Ride - LKR 300</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">BOOK NOW →</button>
+    </form>
+    <div class="link">
+        <a href="/history">View My Bookings</a>
+    </div>
+</div>
+</body>
+</html>
