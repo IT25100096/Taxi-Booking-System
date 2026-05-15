@@ -30,6 +30,10 @@
         .btn-del { background-color: #dc3545; color: #fff; font-weight: 600; border: none; border-radius: 6px; padding: 4px 14px; text-decoration: none; margin-left: 4px; }
         .btn-del:hover { background-color: #bb2d3b; }
         .page-title { color: #f5c518; font-weight: 900; font-size: 1.8rem; }
+        .search-box { background-color: #1a1a1a; color: #fff; border: 1px solid #f5c518; border-radius: 8px; padding: 10px 16px; width: 100%; margin-bottom: 16px; font-size: 1rem; }
+        .search-box::placeholder { color: #888; }
+        .search-box:focus { outline: none; box-shadow: 0 0 0 0.2rem rgba(245,197,24,0.25); }
+        .no-results { color: #888; text-align: center; padding: 20px; display: none; }
     </style>
 </head>
 <body>
@@ -68,7 +72,13 @@
     <!-- Drivers Table -->
     <div class="section-card">
         <div class="section-title">🧑‍✈️ All Drivers</div>
-        <table class="custom-table">
+
+        <!-- Driver Search Box -->
+        <input type="text" class="search-box" id="driverSearch"
+               onkeyup="searchTable('driverSearch', 'driverTable', 'driverNoResults')"
+               placeholder="🔍 Search drivers by name, phone or license..."/>
+
+        <table class="custom-table" id="driverTable">
             <thead>
             <tr>
                 <th>ID</th>
@@ -97,6 +107,7 @@
             </tr>
             </tbody>
         </table>
+        <div class="no-results" id="driverNoResults">No drivers found.</div>
     </div>
 
     <!-- Add Vehicle Form -->
@@ -132,7 +143,13 @@
     <!-- Vehicles Table -->
     <div class="section-card">
         <div class="section-title">🚗 All Vehicles</div>
-        <table class="custom-table">
+
+        <!-- Vehicle Search Box -->
+        <input type="text" class="search-box" id="vehicleSearch"
+               onkeyup="searchTable('vehicleSearch', 'vehicleTable', 'vehicleNoResults')"
+               placeholder="🔍 Search vehicles by model, plate or type..."/>
+
+        <table class="custom-table" id="vehicleTable">
             <thead>
             <tr>
                 <th>ID</th>
@@ -140,6 +157,7 @@
                 <th>Model</th>
                 <th>Plate Number</th>
                 <th>Type</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -151,6 +169,10 @@
                 <td th:text="${vehicle.plateNumber}"></td>
                 <td th:text="${vehicle.vehicleType}"></td>
                 <td>
+                    <span th:if="${vehicle.status == 'active'}" class="badge-active">active</span>
+                    <span th:if="${vehicle.status != 'active'}" class="badge-suspended" th:text="${vehicle.status}"></span>
+                </td>
+                <td>
                     <a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}" class="btn-edit">Edit</a>
                     <a th:href="@{/vehicle/delete/{id}(id=${vehicle.id})}" class="btn-del"
                        onclick="return confirm('Are you sure?')">Delete</a>
@@ -158,8 +180,32 @@
             </tr>
             </tbody>
         </table>
+        <div class="no-results" id="vehicleNoResults">No vehicles found.</div>
     </div>
 
 </div>
+
+<script>
+    function searchTable(inputId, tableId, noResultsId) {
+        let input = document.getElementById(inputId).value.toLowerCase();
+        let table = document.getElementById(tableId);
+        let rows = table.getElementsByTagName("tr");
+        let visibleCount = 0;
+
+        for (let i = 1; i < rows.length; i++) {
+            let rowText = rows[i].innerText.toLowerCase();
+            if (rowText.includes(input)) {
+                rows[i].style.display = "";
+                visibleCount++;
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+
+        let noResults = document.getElementById(noResultsId);
+        noResults.style.display = visibleCount === 0 ? "block" : "none";
+    }
+</script>
+
 </body>
 </html>
