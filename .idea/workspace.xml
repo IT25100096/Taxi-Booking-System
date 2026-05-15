@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1e32fa7-8c36-489d-998d-c6f96c9e86cd" name="Changes" comment="" />
+    <list default="true" id="b1e32fa7-8c36-489d-998d-c6f96c9e86cd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin_dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/book.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/driver_checklist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/history.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/invoice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/register.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/repair_history.html" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
