@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBAN GRID | Control Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        :root{
+          --y:#FFCC00;--y2:#FFE566;--yd:rgba(255,204,0,0.15);--yg:rgba(255,204,0,0.4);
+          --bg:#0a0a00;--panel:#0f0f0a;--panel2:#141408;--border:rgba(255,204,0,0.22);
+          --mono:'Share Tech Mono',monospace;--brand:'Orbitron',sans-serif;
+        }
+        html,body{height:100%;overflow:hidden}
+        body{
+          background:var(--bg);font-family:var(--mono);color:#fff;
+          display:flex;flex-direction:column;cursor:crosshair;
+          background-image:
+            linear-gradient(rgba(255,204,0,0.03) 1px,transparent 1px),
+            linear-gradient(90deg,rgba(255,204,0,0.03) 1px,transparent 1px);
+          background-size:30px 30px;
+        }
+        body::after{
+          content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+          background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px);
+        }
+
+        /* TOP BAR */
+        .topbar{
+          height:46px;background:#000;border-bottom:2px solid var(--y);
+          display:flex;align-items:center;padding:0 20px;gap:20px;flex-shrink:0;
+        }
+        .topbar-logo{font-family:var(--brand);font-size:18px;font-weight:900;color:var(--y);letter-spacing:.18em;
+          text-shadow:0 0 16px var(--yg),0 0 30px rgba(255,204,0,0.2);}
+        .topbar-sep{width:1px;height:18px;background:var(--border);flex-shrink:0}
+        .topbar-item{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.14em;display:flex;align-items:center;gap:6px;white-space:nowrap}
+        .live-dot{width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 8px #00FF88;
+          animation:blink 2s ease-in-out infinite;flex-shrink:0}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+        .topbar-right{margin-left:auto;font-size:13px;color:var(--y);letter-spacing:.15em;opacity:.7;white-space:nowrap}
+
+        /* MAIN GRID */
+        .layout{flex:1;display:grid;grid-template-columns:210px 1fr 1fr;overflow:hidden}
+
+        /* LEFT HERO */
+        .hero{
+          background:linear-gradient(180deg,#111100 0%,#080800 100%);
+          border-right:2px solid var(--y);
+          display:flex;flex-direction:column;align-items:center;
+          padding:18px 12px 14px;overflow:hidden;position:relative;
+        }
+        .hero::before{
+          content:'';position:absolute;inset:0;pointer-events:none;
+          background:radial-gradient(ellipse at 50% 52%,rgba(255,204,0,0.13) 0%,transparent 68%);
+        }
+        .hero-title{
+          font-family:var(--brand);font-size:28px;font-weight:900;
+          color:var(--y);letter-spacing:.08em;text-align:center;line-height:1.15;
+          text-shadow:0 0 20px var(--yg),0 0 40px rgba(255,204,0,0.25),
+            2px 2px 0 #7a5c00,3px 3px 0 #4a3800,4px 4px 8px rgba(0,0,0,.9);
+          margin-bottom:14px;
+        }
+        .taxi-wrap{
+          width:175px;height:118px;position:relative;margin:0 0 14px;
+          filter:drop-shadow(0 0 20px rgba(255,204,0,.6)) drop-shadow(0 0 50px rgba(255,204,0,.2));
+        }
+        .taxi-wrap svg{width:100%;height:100%}
+
+        .hero-stats{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px}
+        .hs{background:rgba(255,204,0,.06);border:1px solid var(--border);padding:9px 8px;text-align:center}
+        .hs-val{font-family:var(--brand);font-size:22px;font-weight:900;color:var(--y);line-height:1;
+          text-shadow:0 0 10px var(--yg),1px 1px 0 #7a5c00,2px 2px 0 #4a3800,3px 3px 6px rgba(0,0,0,.7)}
+        .hs-lbl{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-top:3px}
+
+        .enc-row{width:100%;font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.1em;margin-top:auto;line-height:2.2}
+        .enc-val{color:rgba(255,204,0,.65)}
+
+        /* CENTER PANEL */
+        .center{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+
+        .panel-hdr{
+          background:#000;border-bottom:1px solid var(--border);
+          padding:11px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;
+        }
+        .panel-hdr-title{font-family:var(--brand);font-size:13px;font-weight:700;letter-spacing:.2em;color:var(--y)}
+        .status-tag{
+          margin-left:auto;display:flex;align-items:center;gap:6px;
+          font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.1em;
+        }
+        .status-toggle{
+          width:30px;height:15px;background:rgba(255,204,0,.12);border:1px solid var(--border);
+          border-radius:8px;position:relative;flex-shrink:0;
+        }
+        .status-toggle::after{
+          content:'';position:absolute;top:2px;right:2px;width:9px;height:9px;
+          border-radius:50%;background:var(--y);box-shadow:0 0 6px var(--y);
+        }
+
+        /* STAR SECTION */
+        .star-section{padding:16px 16px 0;flex-shrink:0}
+        .sec-label{font-size:12px;color:rgba(255,204,0,.6);letter-spacing:.2em;margin-bottom:10px;text-transform:uppercase}
+        .sec-label span{color:var(--y);font-size:14px}
+
+        .star-group{display:flex;flex-direction:row-reverse;justify-content:flex-start;gap:1px}
+        .star-group input{display:none}
+        .star-group label{
+          font-size:72px;line-height:1;cursor:pointer;
+          color:rgba(255,255,255,.06);
+          transition:color .15s,text-shadow .15s,transform .18s;
+          text-shadow:1px 1px 0 rgba(0,0,0,.6),2px 2px 0 rgba(0,0,0,.4),3px 3px 4px rgba(0,0,0,.5);
+        }
+        .star-group label:hover,
+        .star-group label:hover~label,
+        .star-group input:checked~label{
+          color:var(--y);
+          transform:scale(1.1) translateY(-4px);
+          text-shadow:
+            0 0 12px var(--y),0 0 30px rgba(255,204,0,.5),0 0 55px rgba(255,204,0,.2),
+            1px 1px 0 #c8960a,2px 2px 0 #a07800,3px 3px 0 #7a5c00,4px 4px 0 #4a3800,
+            5px 5px 12px rgba(0,0,0,.9);
+        }
+
+        /* FORM */
+        .form-body{padding:12px 16px;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+        .cmd-textarea{
+          flex:1;width:100%;
+          background:rgba(0,0,0,.7);
+          border:1px solid rgba(255,204,0,.18);border-left:3px solid rgba(255,204,0,.45);
+          color:rgba(255,255,255,.88);font-family:var(--mono);font-size:16px;line-height:1.6;
+          padding:13px 15px;outline:none;resize:none;
+          transition:border-color .2s,background .2s;min-height:70px;
+        }
+        .cmd-textarea::placeholder{color:rgba(255,255,255,.18);font-size:14px;letter-spacing:.05em}
+        .cmd-textarea:focus{border-color:rgba(255,204,0,.5);background:rgba(255,204,0,.04)}
+
+        .submit-btn{
+          width:100%;padding:18px;
+          background:var(--y);border:none;
+          font-family:var(--brand);font-weight:900;font-size:17px;letter-spacing:.22em;
+          color:#000;cursor:pointer;position:relative;overflow:hidden;
+          clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+          transition:background .2s,transform .1s;
+          text-shadow:1px 1px 0 rgba(0,0,0,.25);
+        }
+        .submit-btn::before{
+          content:'';position:absolute;top:-100%;left:-80px;width:55px;height:300%;
+          background:rgba(255,255,255,.3);transform:rotate(20deg);transition:left .4s;
+        }
+        .submit-btn:hover::before{left:115%}
+        .submit-btn:hover{background:#fff}
+        .submit-btn:active{transform:scale(.98)}
+
+        /* RIGHT PANEL */
+        .right{display:flex;flex-direction:column;overflow:hidden}
+
+        .feed-section{flex:1;overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+        .feed-section::-webkit-scrollbar{width:3px}
+        .feed-section::-webkit-scrollbar-thumb{background:rgba(255,204,0,.3)}
+
+        .review-card{
+          border-bottom:1px solid rgba(255,204,0,.07);
+          padding:16px 18px;display:flex;gap:16px;align-items:center;
+          transition:background .2s;position:relative;
+          animation:fadein .4s ease both;
+        }
+        @keyframes fadein{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+        .review-card:hover{background:rgba(255,204,0,.04)}
+        .review-card::before{
+          content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+        }
+        .review-card[data-rating="5"]::before{background:var(--y)}
+        .review-card[data-rating="4"]::before{background:rgba(255,204,0,.65)}
+        .review-card[data-rating="3"]::before{background:rgba(255,180,0,.5)}
+        .review-card[data-rating="2"]::before{background:rgba(255,100,0,.6)}
+        .review-card[data-rating="1"]::before{background:rgba(255,40,40,.7)}
+
+        .rc-score{
+          flex-shrink:0;width:80px;height:80px;
+          background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.28);
+          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+          clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+        }
+        .rc-num{
+          font-family:var(--brand);font-size:34px;font-weight:900;color:var(--y);line-height:1;
+          text-shadow:0 0 12px var(--yg),1px 1px 0 #a07800,2px 2px 0 #4a3800,3px 3px 8px rgba(0,0,0,.8);
+        }
+        .rc-stars{font-size:13px;color:var(--y);letter-spacing:1px;text-shadow:0 0 6px rgba(255,204,0,.6)}
+        .rc-stars .e{color:rgba(255,255,255,.1);text-shadow:none}
+
+        .rc-body{flex:1;min-width:0}
+        .rc-label{font-size:11px;color:rgba(255,204,0,.4);letter-spacing:.14em;margin-bottom:5px;text-transform:uppercase}
+        .rc-comment{
+          font-family:var(--brand);font-size:19px;font-weight:700;
+          color:rgba(255,255,255,.92);line-height:1.4;letter-spacing:.02em;
+          text-shadow:0 1px 0 rgba(0,0,0,.8),1px 2px 0 rgba(0,0,0,.5),2px 3px 6px rgba(0,0,0,.5);
+          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+        }
+        .rc-meta{display:flex;align-items:center;gap:10px;margin-top:7px;flex-wrap:wrap}
+        .rc-id{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.12em}
+        .rc-tag{font-size:11px;letter-spacing:.1em;padding:2px 10px;border:1px solid;text-transform:uppercase}
+        .tag-hi{color:#00FFAA;border-color:rgba(0,255,170,.35);background:rgba(0,255,170,.06)}
+        .tag-md{color:var(--y);border-color:rgba(255,204,0,.35);background:var(--yd)}
+        .tag-lo{color:#FF6B6B;border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.06)}
+
+        /* PASSENGER → DRIVER RELATION */
+        .rc-relation{
+          font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.05em;
+          margin-bottom:5px;display:flex;align-items:center;gap:5px;
+        }
+        .rel-user{color:var(--y);font-weight:700;font-family:var(--brand);font-size:10px}
+        .rel-arrow{color:rgba(255,204,0,.5);font-size:11px}
+        .rel-driver{color:rgba(255,255,255,.6);font-weight:700;font-family:var(--brand);font-size:10px}
+
+        /* EDIT MODE — submit button override */
+        .submit-btn.edit-mode{
+          background:#00FF88;
+          color:#000;
+          box-shadow:0 0 18px rgba(0,255,136,.45),0 0 40px rgba(0,255,136,.2);
+          text-shadow:none;
+        }
+        .submit-btn.edit-mode:hover{background:#00ffaa;box-shadow:0 0 28px rgba(0,255,136,.7)}
+
+        /* EDIT MODE — form border pulse */
+        .center.edit-mode-active .cmd-textarea{
+          border-color:rgba(0,255,136,.5);
+          border-left-color:#00FF88;
+          background:rgba(0,255,136,.03);
+          box-shadow:0 0 12px rgba(0,255,136,.1) inset;
+        }
+        .center.edit-mode-active .panel-hdr-title{color:#00FF88}
+
+        /* CANCEL EDIT BUTTON */
+        .btn-cancel-edit{
+          width:100%;padding:9px;
+          background:transparent;border:1px solid rgba(255,255,255,.12);
+          font-family:var(--brand);font-size:11px;font-weight:700;
+          letter-spacing:.18em;color:rgba(255,255,255,.35);cursor:pointer;
+          clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+          transition:border-color .2s,color .2s;display:none;
+        }
+        .btn-cancel-edit.visible{display:block}
+        .btn-cancel-edit:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.65)}
+
+        /* EDIT MODE indicator badge */
+        .edit-mode-badge{
+          display:none;align-items:center;gap:6px;
+          font-size:10px;letter-spacing:.15em;color:#00FF88;
+          padding:3px 10px;border:1px solid rgba(0,255,136,.3);
+          background:rgba(0,255,136,.07);
+          clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
+        }
+        .edit-mode-badge.visible{display:flex}
+        .edit-dot{width:6px;height:6px;border-radius:50%;background:#00FF88;box-shadow:0 0 6px #00FF88;animation:blink 1s ease-in-out infinite}
+
+        /* EDIT BUTTON */
+        .btn-edit-log{
+          font-family:var(--brand);font-size:9px;font-weight:700;
+          letter-spacing:.15em;padding:5px 12px;
+          background:transparent;border:1px solid rgba(255,204,0,.35);
+          color:var(--y);cursor:pointer;text-transform:uppercase;
+          clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
+          transition:background .15s,color .15s;
+        }
+        .btn-edit-log:hover{background:rgba(255,204,0,.14);color:#fff}
+
+        /* DELETE BUTTON */
+        .btn-terminate{
+          font-family:var(--brand);font-size:9px;font-weight:700;
+          letter-spacing:.15em;padding:5px 12px;
+          background:transparent;border:1px solid rgba(255,60,60,.35);
+          color:#FF6B6B;cursor:pointer;text-transform:uppercase;
+          clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
+          transition:background .15s,color .15s,border-color .15s;
+        }
+        .btn-terminate:hover{
+          background:rgba(255,60,60,.15);
+          border-color:rgba(255,60,60,.65);
+          color:#ff9999;
+        }
+        .btn-terminate:active{transform:scale(.97)}
+
+        /* RC ACTIONS ROW */
+        .rc-actions{display:flex;align-items:center;gap:8px;margin-top:8px}
+        .delete-form{margin:0;padding:0}
+
+        /* EMPTY */
+        .empty-state{
+          flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:12px;color:rgba(255,255,255,.07);
+        }
+        .empty-state p{font-family:var(--brand);font-size:13px;letter-spacing:.3em}
+
+        /* BOTTOM BAR */
+        .bottombar{
+          height:32px;background:#000;border-top:1px solid var(--border);
+          display:flex;align-items:center;padding:0 18px;gap:18px;flex-shrink:0;
+          font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.12em;
+        }
+        .bb-seg{display:flex;align-items:center;gap:5px;white-space:nowrap}
+        .bb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+        .d-g{background:#00FF88;box-shadow:0 0 5px #00FF88}
+        .d-y{background:var(--y);box-shadow:0 0 5px var(--y)}
+        .bb-right{margin-left:auto;display:flex;align-items:center;gap:16px;white-space:nowrap}
+        .bb-hi{color:var(--y)}
+
+
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="topbar-logo">URBAN GRID</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-item">TAXI COMMAND CENTER</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-item"><div class="live-dot"></div>DISPATCH_ACTIVE</div>
+    <div class="topbar-item">FLEET_ZONE: ALPHA-7</div>
+    <div class="topbar-item">PROTOCOL: v5.0</div>
+    <div class="topbar-right">UTC&nbsp;<span id="clock-val">--:--:--</span></div>
+</div>
+
+<div class="layout">
+
+    <!-- LEFT HERO -->
+    <aside class="hero">
+        <div class="hero-title">URBAN<br>GRID<br>CONTROL</div>
+
+        <div class="taxi-wrap">
+            <svg viewBox="0 0 200 128" xmlns="http://www.w3.org/2000/svg">
+                <rect x="18" y="44" width="164" height="40" rx="5" fill="#FFCC00"/>
+                <rect x="18" y="44" width="164" height="40" rx="5" fill="none" stroke="#c9980a" stroke-width="1.2"/>
+                <rect x="18" y="56" width="164" height="14" fill="#1a1500"/>
+                <rect x="20" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="40" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="60" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="80" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="100" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="120" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="140" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <rect x="160" y="57" width="10" height="12" fill="#FFCC00" opacity=".95"/>
+                <path d="M62 44 L76 16 L124 16 L138 44Z" fill="#FFE566"/>
+                <path d="M62 44 L76 16 L124 16 L138 44Z" fill="none" stroke="#c9980a" stroke-width="1"/>
+                <rect x="78" y="19" width="18" height="20" rx="2" fill="#001a33" stroke="#00AAFF" stroke-width="1" opacity=".95"/>
+                <rect x="104" y="19" width="18" height="20" rx="2" fill="#001a33" stroke="#00AAFF" stroke-width="1" opacity=".95"/>
+                <rect x="78" y="19" width="18" height="20" rx="2" fill="#00AAFF" opacity=".1"/>
+                <rect x="104" y="19" width="18" height="20" rx="2" fill="#00AAFF" opacity=".1"/>
+                <rect x="174" y="52" width="16" height="9" rx="2" fill="#FFFFCC" opacity=".95"/>
+                <polygon points="190,53 212,44 212,64 190,61" fill="#FFFF88" opacity=".14"/>
+                <rect x="10" y="54" width="11" height="7" rx="1" fill="#FF3333" opacity=".9"/>
+                <rect x="78" y="6" width="44" height="13" rx="2" fill="#FFCC00"/>
+                <text x="100" y="15.5" text-anchor="middle" font-family="'Orbitron',sans-serif" font-size="7" font-weight="900" fill="#000" letter-spacing="2">TAXI</text>
+                <line x1="100" y1="44" x2="100" y2="84" stroke="#c9980a" stroke-width="1" opacity=".5"/>
+                <rect x="106" y="62" width="9" height="3" rx="1.5" fill="#c9980a"/>
+                <circle cx="52" cy="106" r="16" fill="#111" stroke="#FFCC00" stroke-width="2"/>
+                <circle cx="52" cy="106" r="9" fill="#1a1500" stroke="#FFCC00" stroke-width="1.5"/>
+                <circle cx="52" cy="106" r="3" fill="#FFCC00"/>
+                <circle cx="148" cy="106" r="16" fill="#111" stroke="#FFCC00" stroke-width="2"/>
+                <circle cx="148" cy="106" r="9" fill="#1a1500" stroke="#FFCC00" stroke-width="1.5"/>
+                <circle cx="148" cy="106" r="3" fill="#FFCC00"/>
+                <ellipse cx="100" cy="122" rx="80" ry="5" fill="rgba(255,204,0,0.08)"/>
+            </svg>
+        </div>
+
+        <!-- FIX 2: Dynamic hero stats -->
+        <div class="hero-stats">
+            <div class="hs">
+                <div class="hs-val" th:text="${allReviews.size()}">0</div>
+                <div class="hs-lbl">TOTAL LOGS</div>
+            </div>
+            <div class="hs">
+                <div class="hs-val" th:text="${averageRating}">0.0</div>
+                <div class="hs-lbl">UNIT RATING</div>
+            </div>
+            <div class="hs">
+                <div class="hs-val">98%</div>
+                <div class="hs-lbl">UPTIME</div>
+            </div>
+            <div class="hs">
+                <div class="hs-val" th:text="${targetDriver}">--</div>
+                <div class="hs-lbl">ZONE_ID</div>
+            </div>
+        </div>
+
+        <div class="enc-row">
+            ENCRYPTION: <span class="enc-val">AES-256</span><br>
+            DATABASE_STATUS: <span class="enc-val">CONNECTED</span><br>
+            NODE: <span class="enc-val">SECURE</span>
+        </div>
+    </aside>
+
+    <!-- CENTER FORM -->
+    <div class="center">
+        <div class="panel-hdr">
+            <div class="panel-hdr-title">MANUAL RATING SWITCHES</div>
+            <div class="edit-mode-badge" id="editBadge"><div class="edit-dot"></div>EDIT_MODE</div>
+            <div class="status-tag">STATUS: <div class="status-toggle"></div></div>
+        </div>
+
+        <form id="reviewForm" th:action="@{/reviews/add}" method="post" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+            <!-- Hidden fields -->
+            <input type="hidden" id="editReviewId" name="id">
+            <input type="hidden" name="driverId" th:value="${targetDriver}">
+            <input type="hidden" name="driverName" th:value="${driverName}">
+            <input type="hidden" name="username" th:value="${currentUser}">
+
+            <div class="star-section">
+                <div class="sec-label">RATING: <span id="star-label">—</span></div>
+                <div class="star-group">
+                    <input type="radio" id="st5" name="rating" value="5" required/>
+                    <label for="st5">★</label>
+                    <input type="radio" id="st4" name="rating" value="4"/>
+                    <label for="st4">★</label>
+                    <input type="radio" id="st3" name="rating" value="3"/>
+                    <label for="st3">★</label>
+                    <input type="radio" id="st2" name="rating" value="2"/>
+                    <label for="st2">★</label>
+                    <input type="radio" id="st1" name="rating" value="1"/>
+                    <label for="st1">★</label>
+                </div>
+            </div>
+
+            <div class="panel-hdr" style="margin-top:10px">
+                <div class="panel-hdr-title">PASSENGER REMARKS</div>
+                <div class="status-tag">STATUS: <div class="status-toggle"></div></div>
+            </div>
+
+            <div class="form-body">
+                <textarea id="commentField" name="comment" class="cmd-textarea" placeholder="AWAITING INPUT > _" required></textarea>
+                <button type="submit" id="submitBtn" class="submit-btn">⚡ EXECUTE &amp; SYNC</button>
+                <button type="button" id="cancelEditBtn" class="btn-cancel-edit" onclick="cancelEdit()">✕ CANCEL EDIT MODE</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- RIGHT: LIVE FEED -->
+    <div class="right">
+        <div class="panel-hdr">
+            <div class="panel-hdr-title">LIVE DATA FEED — PASSENGER REVIEWS</div>
+            <div class="status-tag">
+                <span th:text="'REC: ' + ${allReviews.size()}">REC: 0</span>
+                <div class="status-toggle"></div>
+            </div>
+        </div>
+
+        <div class="feed-section" th:if="${not #lists.isEmpty(allReviews)}">
+            <div
+                    th:each="rev, stat : ${allReviews}"
+                    class="review-card"
+                    th:attr="data-rating=${rev.rating}, style='animation-delay:' + ${stat.index * 50} + 'ms'"
+            >
+                <div class="rc-score">
+                    <div class="rc-num" th:text="${rev.rating}">5</div>
+                    <div class="rc-stars">
+                        <th:block th:each="i : ${#numbers.sequence(1, rev.rating)}">★</th:block>
+                        <span class="e" th:if="${rev.rating < 5}">
+                            <th:block th:each="i : ${#numbers.sequence(rev.rating + 1, 5)}">★</th:block>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- FIX 3: rc-body with relation row + delete form -->
+                <div class="rc-body">
+                    <div class="rc-relation">
+                        <span class="rel-user" th:text="${rev.username}">User</span>
+                        <span class="rel-arrow">→</span>
+                        <span class="rel-driver" th:text="${rev.driverName}">Driver</span>
+                    </div>
+                    <div class="rc-label">RAVILE REVIEWS</div>
+                    <div class="rc-comment" th:text="${rev.comment}">Passenger comment here.</div>
+                    <div class="rc-meta">
+                        <div class="rc-id" th:text="'LOG_' + ${stat.index + 1000}">LOG_1000</div>
+                        <div class="rc-tag tag-hi" th:if="${rev.rating >= 4}">POSITIVE</div>
+                        <div class="rc-tag tag-md" th:if="${rev.rating == 3}">NEUTRAL</div>
+                        <div class="rc-tag tag-lo" th:if="${rev.rating <= 2}">CRITICAL</div>
+                    </div>
+                    <div class="rc-actions">
+                        <button type="button" class="btn-edit-log"
+                                th:onclick="'prepareEdit(' + ${rev.id} + ',' + ${rev.rating} + ', this)'"
+                                th:attr="data-comment=${rev.comment}, data-id=${rev.id}">
+                            ✎ EDIT_LOG
+                        </button>
+                        <form class="delete-form" th:action="@{/reviews/delete/{id}(id=${rev.id})}" method="post">
+                            <input type="hidden" name="driverId" th:value="${targetDriver}">
+                            <input type="hidden" name="driverName" th:value="${driverName}">
+                            <input type="hidden" name="username" th:value="${currentUser}">
+                            <button type="submit" class="btn-terminate">⬛ TERMINATE_LOG</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(allReviews)}">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="rgba(255,204,0,0.4)">
+                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9l-1.1-.3L17.7 7c-.3-.6-.9-1-1.6-1H7.9c-.7 0-1.3.4-1.6 1L4.6 10.8l-1.1.3C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2c0 1.7 1.3 3 3 3s3-1.3 3-3h6c0 1.7 1.3 3 3 3s3-1.3 3-3zM8 18c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm8-1c0 .6-.4 1-1 1s-1-.4-1-1 .4-1 1-1 1 .4 1 1zm3-5l.8.2c.1 0 .2.1.2.2v2H4v-2c0-.1.1-.2.2-.2l.8-.2L6.7 8h10.6l1.7 4z"/>
+            </svg>
+            <p>GRID_EMPTY // AWAITING_LOGS</p>
+        </div>
+
+
+    </div>
+
+</div>
+
+<!-- FIX 4: Dynamic current user in bottom bar -->
+<div class="bottombar">
+    <div class="bb-seg"><div class="bb-dot d-g"></div>SYSTEM STATUS: <span class="bb-hi">ACTIVE</span></div>
+    <div class="bb-seg"><div class="bb-dot d-y"></div>GRID_SYNC: OK</div>
+    <div class="bb-right">
+        <span>URBAN_GRID_v5.0</span>
+        <span>USER: <span class="bb-hi" th:text="${currentUser}">ADMIN_01</span></span>
+        <span id="bot-clock">--:--:--</span>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /* ── CLOCK ── */
+    function tick(){
+      const t=new Date().toUTCString().split(' ')[4];
+      document.getElementById('clock-val').textContent=t;
+      document.getElementById('bot-clock').textContent=t;
+    }
+    tick();setInterval(tick,1000);
+
+    /* ── STAR LABEL ── */
+    const starLabels=['','POOR','BELOW AVG','AVERAGE','GOOD','EXCELLENT'];
+    document.querySelectorAll('.star-group input').forEach(r=>{
+      r.addEventListener('change',()=>{
+        document.getElementById('star-label').textContent=starLabels[r.value]+' ('+r.value+'/5)';
+      });
+    });
+
+    /* ── EDIT LOGIC ── */
+    const ADD_ACTION = /*[[@{/reviews/add}]]*/ '/reviews/add';
+    const reviewForm = document.getElementById('reviewForm');
+
+    function prepareEdit(id, rating, triggerBtn) {
+      const btn = triggerBtn;
+      const comment = btn.getAttribute('data-comment');
+
+      // Populate form fields
+      document.getElementById('editReviewId').value = id;
+      document.getElementById('commentField').value = comment;
+
+      // CRITICAL: switch form action using getElementById, not document.reviewForm
+      reviewForm.action = '/reviews/update/' + id;
+
+      // Set the star rating
+      const starInput = document.getElementById('st' + rating);
+      if (starInput) {
+        starInput.checked = true;
+        document.getElementById('star-label').textContent =
+          starLabels[rating] + ' (' + rating + '/5)';
+      }
+
+      // Switch button to edit mode
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.textContent = '✎ UPDATE_DATA & SYNC';
+      submitBtn.classList.add('edit-mode');
+
+      // Show cancel + badge, activate panel
+      document.getElementById('cancelEditBtn').classList.add('visible');
+      document.getElementById('editBadge').classList.add('visible');
+      document.querySelector('.center').classList.add('edit-mode-active');
+
+      // Highlight active card
+      document.querySelectorAll('.review-card').forEach(c=>c.style.outline='');
+      btn.closest('.review-card').style.outline='1px solid rgba(0,255,136,.45)';
+
+      // Scroll form into view & focus
+      document.getElementById('commentField').focus();
+    }
+
+    function cancelEdit() {
+      // Reset form
+      document.getElementById('editReviewId').value = '';
+      document.getElementById('commentField').value = '';
+      reviewForm.action = ADD_ACTION;
+
+      // Uncheck all stars
+      document.querySelectorAll('.star-group input').forEach(i=>i.checked=false);
+      document.getElementById('star-label').textContent = '—';
+
+      // Reset button
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.textContent = '⚡ EXECUTE & SYNC';
+      submitBtn.classList.remove('edit-mode');
+
+      // Hide cancel + badge, deactivate panel
+      document.getElementById('cancelEditBtn').classList.remove('visible');
+      document.getElementById('editBadge').classList.remove('visible');
+      document.querySelector('.center').classList.remove('edit-mode-active');
+
+      // Clear card highlight
+      document.querySelectorAll('.review-card').forEach(c=>c.style.outline='');
+    }
+
+
+</script>
+</body>
+</html>
