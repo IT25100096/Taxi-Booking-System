@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TaxiGo - Your Ride, Your Way</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #0a0a0a; color: #fff; font-family: 'Segoe UI', sans-serif; }
+        .navbar { background-color: #f5c518; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar-brand { font-size: 1.8rem; font-weight: 900; color: #000; text-decoration: none; }
+        .nav-links a { color: #000; font-weight: 600; text-decoration: none; margin-left: 24px; font-size: 0.95rem; }
+        .nav-links a:hover { text-decoration: underline; }
+        .hero { background-color: #1a1a1a; padding: 80px 40px; text-align: center; border-bottom: 3px solid #f5c518; }
+        .hero h1 { font-size: 3.5rem; font-weight: 900; color: #f5c518; margin-bottom: 16px; }
+        .hero p { font-size: 1.2rem; color: #aaa; margin-bottom: 40px; }
+        .hero-btn { background-color: #f5c518; color: #000; font-weight: 700; padding: 16px 40px; border-radius: 50px; text-decoration: none; font-size: 1.1rem; }
+        .hero-btn:hover { background-color: #e6a800; color: #000; }
+        .stats { background-color: #f5c518; padding: 30px 40px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 900; color: #000; }
+        .stat-label { font-size: 0.9rem; color: #333; font-weight: 600; }
+        .services { padding: 60px 40px; background-color: #0a0a0a; }
+        .services h2 { text-align: center; color: #f5c518; font-weight: 900; font-size: 2rem; margin-bottom: 8px; }
+        .services p { text-align: center; color: #aaa; margin-bottom: 40px; }
+        .service-card { background-color: #1a1a1a; border: 1px solid #333; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; text-decoration: none; color: #fff; display: block; height: 100%; }
+        .service-card:hover { border-color: #f5c518; transform: translateY(-8px); color: #fff; box-shadow: 0 8px 24px rgba(245,197,24,0.2); }
+        .service-icon { font-size: 3rem; margin-bottom: 16px; }
+        .service-title { font-size: 1.1rem; font-weight: 700; color: #f5c518; margin-bottom: 8px; }
+        .service-desc { font-size: 0.9rem; color: #aaa; line-height: 1.6; }
+        .how-it-works { padding: 60px 40px; background-color: #111; }
+        .how-it-works h2 { text-align: center; color: #f5c518; font-weight: 900; font-size: 2rem; margin-bottom: 8px; }
+        .how-it-works p { text-align: center; color: #aaa; margin-bottom: 40px; }
+        .step-card { text-align: center; padding: 20px; }
+        .step-number { background-color: #f5c518; color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; margin: 0 auto 16px; }
+        .step-title { font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .step-desc { color: #aaa; font-size: 0.9rem; }
+        .footer { background-color: #f5c518; padding: 20px 40px; text-align: center; }
+        .footer p { color: #000; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="/home" class="navbar-brand">🚖 TaxiGo</a>
+    <div class="nav-links">
+        <a href="/user-login">Login</a>
+        <a href="/user-register">Register</a>
+        <a href="/booking-book">Book a Ride</a>
+        <a href="/">Admin</a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+    <h1>Your Ride,<br>Your Way 🚖</h1>
+    <p>Fast, safe and affordable taxi service — available 24/7 across the city</p>
+    <a href="/booking-book" class="hero-btn">Book a Ride Now</a>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+    <div class="row">
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Active Drivers</div>
+        </div>
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Happy Passengers</div>
+        </div>
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-label">Rides Completed</div>
+        </div>
+        <div class="col-md-3 stat-item">
+            <div class="stat-number">4.9⭐</div>
+            <div class="stat-label">Average Rating</div>
+        </div>
+    </div>
+</div>
+
+<!-- Services -->
+<div class="services">
+    <h2>Our Services</h2>
+    <p>Everything you need in one platform</p>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="/user-login" class="service-card">
+                <div class="service-icon">🔐</div>
+                <div class="service-title">Login</div>
+                <div class="service-desc">Sign in to your account securely as a passenger or driver</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/user-register" class="service-card">
+                <div class="service-icon">📝</div>
+                <div class="service-title">Register</div>
+                <div class="service-desc">Create your account and start your journey with TaxiGo</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/booking-book" class="service-card">
+                <div class="service-icon">📍</div>
+                <div class="service-title">Book a Ride</div>
+                <div class="service-desc">Schedule instant or future rides with just a few clicks</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/booking-history" class="service-card">
+                <div class="service-icon">📋</div>
+                <div class="service-title">Ride History</div>
+                <div class="service-desc">View all your past rides and booking details</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/payment-summary" class="service-card">
+                <div class="service-icon">💳</div>
+                <div class="service-title">Payments</div>
+                <div class="service-desc">Manage payments, view invoices and transaction history</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/reviews" class="service-card">
+                <div class="service-icon">⭐</div>
+                <div class="service-title">Reviews</div>
+                <div class="service-desc">Rate your rides and read feedback from other passengers</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/maintenance-dashboard" class="service-card">
+                <div class="service-icon">🔧</div>
+                <div class="service-title">Maintenance</div>
+                <div class="service-desc">Vehicle maintenance tracking and safety audit system</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/driver-profile" class="service-card">
+                <div class="service-icon">🧑‍✈️</div>
+                <div class="service-title">Driver Profile</div>
+                <div class="service-desc">Manage your driver profile and vehicle information</div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="/" class="service-card">
+                <div class="service-icon">🚖</div>
+                <div class="service-title">Admin Panel</div>
+                <div class="service-desc">Fleet management, system logs and admin controls</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- How it works -->
+<div class="how-it-works">
+    <h2>How It Works</h2>
+    <p>Get your ride in 3 simple steps</p>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-title">Create Account</div>
+                <div class="step-desc">Register as a passenger or driver in minutes</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-title">Book Your Ride</div>
+                <div class="step-desc">Enter pickup and drop-off location and choose ride type</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-title">Enjoy Your Trip</div>
+                <div class="step-desc">Track your driver and pay securely after the ride</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>🚖 TaxiGo — Your Ride, Your Way | SE1020 OOP Project — Group 23</p>
+</div>
+
+</body>
+</html>
