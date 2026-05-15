@@ -147,6 +147,10 @@ public class AdminController {
     @GetMapping("/payment-invoice")
     public String paymentInvoice() { return "payment-invoice"; }
 
+    // Member 6 pages
+    @GetMapping("/reviews")
+    public String reviews() { return "reviews"; }
+
     @GetMapping("/review-dashboard")
     public String reviewDashboard() { return "review-dashboard"; }
 
