@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>New Payment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #1a1a1a; color: #ffffff; }
+        .card { background-color: #2d2d2d; border: 1px solid #FFC107; }
+        .card-header { background-color: #000000; color: #FFC107; }
+        .form-control, .form-select {
+            background-color: #3a3a3a; color: #ffffff; border-color: #FFC107;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #3a3a3a; color: #ffffff;
+            border-color: #FFC107; box-shadow: 0 0 0 0.2rem rgba(255,193,7,0.25);
+        }
+        .form-label { color: #FFC107; }
+        .btn-primary { background-color: #FFC107; border-color: #FFC107; color: #000000; font-weight: bold; }
+        .btn-primary:hover { background-color: #e0a800; border-color: #e0a800; color: #000000; }
+        .btn-outline-secondary { border-color: #6c757d; color: #aaaaaa; }
+        h3 { color: #FFC107; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card shadow" style="max-width:500px;margin:auto">
+        <div class="card-header text-center py-3">
+            <h4 class="mb-0">🚖 Generate Payment</h4>
+        </div>
+        <div class="card-body p-4">
+            <form th:action="@{/payments/create}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Trip ID</label>
+                    <input name="tripId" class="form-control" placeholder="e.g. TRIP001" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Passenger ID</label>
+                    <input name="passengerId" class="form-control" placeholder="e.g. P001" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Distance (km)</label>
+                    <input name="distanceKm" type="number" step="0.1"
+                           class="form-control" placeholder="e.g. 5.5" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Payment Type</label>
+                    <select name="paymentType" class="form-select">
+                        <option value="CASH">Cash</option>
+                        <option value="ONLINE">Online</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Promo Code (optional)</label>
+                    <input name="promoCode" class="form-control"
+                           placeholder="TAXI10 / SAVE20 / FIRST50">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-2">Generate Payment</button>
+                <a href="/payments/history" class="btn btn-outline-secondary w-100">View History</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
