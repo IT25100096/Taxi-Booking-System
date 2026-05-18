@@ -1,7 +1,4 @@
 package com.TaxiBookingSystem.demo;
-<<<<<<< HEAD
-public class Demo1Application {}
-=======
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,4 +11,3 @@ public class Demo1Application {
     }
 
 }
->>>>>>> origin/Member-3-Maintenance-&-Safety-Audit
