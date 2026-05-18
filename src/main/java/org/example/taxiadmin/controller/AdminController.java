@@ -28,7 +28,7 @@ public class AdminController {
         model.addAttribute("logCount", adminService.countLogs());
         return "dashboard";
     }
-
+    //polimophysem
     // Fleet
     @GetMapping("/fleet")
     public String fleet(Model model) {
@@ -38,12 +38,13 @@ public class AdminController {
         model.addAttribute("newVehicle", new Vehicle());
         return "fleet";
     }
+    //abstraction
 
     // Add driver
     @PostMapping("/driver/add")
     public String addDriver(@ModelAttribute Driver driver) {
         driver.setStatus("active");
-        adminService.addDriver(driver);
+        adminService.addDriver(driver);    //abstra
         return "redirect:/fleet";
     }
 
