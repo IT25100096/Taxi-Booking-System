@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Repair History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        dark: { 800: '#121212', 900: '#0a0a0a' },
+                        brand: { 400: '#fde047', 500: '#eab308', 600: '#ca8a04' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0a0a0a; color: #f8fafc; overflow-x: hidden; }
+        .glass-header { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .timeline-item { position: relative; padding-left: 2.5rem; border-left: 2px solid #262626; margin-left: 1rem; padding-bottom: 2.5rem; transition: all 0.3s ease; }
+        .timeline-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+        .timeline-dot { position: absolute; left: -0.45rem; top: 0; width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid #0a0a0a; transition: transform 0.3s ease; }
+        .timeline-card { background: rgba(18, 18, 18, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 1rem; padding: 1.5rem; transition: all 0.3s ease; }
+        .timeline-item:hover .timeline-card { transform: translateX(8px); background: rgba(18, 18, 18, 0.9); border-color: rgba(234, 179, 8, 0.2); }
+        .timeline-item:hover .timeline-dot { transform: scale(1.5); }
+    </style>
+</head>
+<body class="pb-20">
+
+<div class="glass-header sticky top-0 z-50 px-8 py-5">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-brand-600 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-white">Vehicle Timeline: <span class="text-brand-400">V-1042</span></h1>
+                <p class="text-neutral-400 text-sm mt-0.5">Toyota Prius 2021 • License: ABC-1234</p>
+            </div>
+        </div>
+        <span class="bg-yellow-950/40 text-brand-300 border border-brand-600/30 px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide">Status: Under-Repair</span>
+    </div>
+</div>
+
+<div class="max-w-3xl mx-auto mt-12 px-6">
+
+    <div class="relative">
+        <div class="timeline-item">
+            <div class="timeline-dot bg-red-500"></div>
+            <div class="timeline-card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2.5 py-0.5 rounded text-xs font-bold mr-2">CRITICAL INCIDENT</span>
+                        <span class="text-neutral-400 text-sm font-medium">Today, 08:30 AM</span>
+                    </div>
+                    <span class="text-neutral-500 text-xs">Report ID: INC-901</span>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">Brake Failure Reported</h3>
+                <p class="text-neutral-300 leading-relaxed mb-4">Driver reported that brakes were completely unresponsive during a stop sign approach. Vehicle was towed immediately. Pending mechanical inspection.</p>
+
+                <div class="bg-dark-900 rounded-lg p-3 border border-neutral-800 flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center text-xs font-bold mr-3 text-brand-400">D1</div>
+                    <div class="text-sm">
+                        <p class="text-white font-medium">Reported by Driver: John Smith</p>
+                        <p class="text-neutral-500">via Driver Health Checklist App</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot bg-brand-500"></div>
+            <div class="timeline-card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <span class="bg-brand-500/10 text-brand-400 border border-brand-500/20 px-2.5 py-0.5 rounded text-xs font-bold mr-2">MAINTENANCE OVERDUE</span>
+                        <span class="text-neutral-400 text-sm font-medium">Oct 12, 2025</span>
+                    </div>
+                    <span class="text-neutral-500 text-xs">Report ID: MNT-442</span>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">60k Mile Major Service Skipped</h3>
+                <p class="text-neutral-300 leading-relaxed">System flagged the vehicle for missing its scheduled 60,000-mile service which includes brake pad inspection, fluid flush, and spark plug replacement.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot bg-emerald-500"></div>
+            <div class="timeline-card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded text-xs font-bold mr-2">MAINTENANCE LOG</span>
+                        <span class="text-neutral-400 text-sm font-medium">Mar 05, 2025</span>
+                    </div>
+                    <span class="text-neutral-500 text-xs">Report ID: MNT-118</span>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">Routine Oil Change & Tire Rotation</h3>
+                <p class="text-neutral-300 leading-relaxed">Standard 50k mile synthetic oil change completed. Tires rotated and balanced. Fluids topped off.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot bg-neutral-600"></div>
+            <div class="timeline-card">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <span class="bg-neutral-800 text-neutral-300 border border-neutral-700 px-2.5 py-0.5 rounded text-xs font-bold mr-2">FLEET ONBOARDING</span>
+                        <span class="text-neutral-400 text-sm font-medium">Jan 10, 2024</span>
+                    </div>
+                </div>
+                <h3 class="text-xl font-semibold text-white">Vehicle Added to Fleet</h3>
+                <p class="text-neutral-300 mt-2">Initial registration and safety inspection passed successfully. Mileage: 12,500.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
