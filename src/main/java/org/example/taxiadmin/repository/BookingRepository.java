@@ -1,6 +1,6 @@
-package com.taxi.booking.repository;
+package org.example.taxiadmin.repository;
 
-import com.taxi.booking.model.Booking;
+import org.example.taxiadmin.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookingRepository

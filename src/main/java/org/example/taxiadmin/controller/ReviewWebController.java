@@ -15,7 +15,7 @@ public class ReviewWebController {
     @Autowired
     private ReviewService reviewService;
 
-    // --- 1. READ & DASHBOARD VIEW ---
+    // read and dashboard view
     @GetMapping
     public String showDashboard(
             @RequestParam(defaultValue = "D-N/A") String driverId,
@@ -26,7 +26,7 @@ public class ReviewWebController {
         List<Review> allReviews = reviewService.getAllReviews();
         model.addAttribute("allReviews", allReviews);
 
-        // --- RECENT TYPE LOGIC ---
+        //  TYPE LOGIC
         // Pulls the class name (e.g., PassengerReview) from the last log entry
         String recentType = "N/A";
         if (!allReviews.isEmpty()) {
@@ -47,7 +47,7 @@ public class ReviewWebController {
         return "reviews";
     }
 
-    // --- 2. CREATE: ADD NEW LOG ---
+    //   CREATE: ADD NEW LOG
     @PostMapping("/add")
     public String addReviewFromForm(
             @RequestParam int rating,
@@ -61,7 +61,7 @@ public class ReviewWebController {
         return "redirect:/reviews?driverId=" + driverId + "&driverName=" + driverName + "&passengerName=" + username;
     }
 
-    // --- 3. UPDATE: FIX FOR DUPLICATE COMMENTS ---
+    // FIX FOR DUPLICATE COMMENTS
     @PostMapping("/update/{id}")
     public String updateReview(
             @PathVariable Integer id,
@@ -71,7 +71,7 @@ public class ReviewWebController {
             @RequestParam String driverName,
             @RequestParam String username) {
 
-        // FIX: We load the existing entity by ID first.
+        // We load the existing entity by ID first.
         // This ensures JPA performs an UPDATE instead of an INSERT.
         Review existing = reviewService.getReviewById(id);
         if (existing != null) {

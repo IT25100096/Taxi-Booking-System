@@ -14,17 +14,17 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    // --- 1. READ ALL ---
+    // read all
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
     }
 
-    // --- 2. READ ONE (For Edit Button) ---
+    // read one For Edit Button
     public Review getReviewById(Integer id) {
         return reviewRepository.findById(id).orElse(null);
     }
 
-    // --- 3. CREATE (New Passenger Log) ---
+    // create new passenger log
     public void addPassengerReview(int rating, String comment, String driverId, String driverName, String username) {
         PassengerReview pr = new PassengerReview(rating, comment, driverId, driverName, username);
         reviewRepository.save(pr);

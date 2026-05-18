@@ -1,6 +1,6 @@
-package com.taxi.repository;
+package org.example.taxiadmin.repository;
 
-import com.taxi.model.User;
+import org.example.taxiadmin.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

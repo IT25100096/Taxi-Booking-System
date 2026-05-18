@@ -1,4 +1,4 @@
-package com.taxi.booking.model;
+package org.example.taxiadmin.model;
 
 import jakarta.persistence.*;
 

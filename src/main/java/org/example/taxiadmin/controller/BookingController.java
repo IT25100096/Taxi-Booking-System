@@ -1,7 +1,7 @@
-package com.taxi.booking.controller;
+package org.example.taxiadmin.controller;
 
-import com.taxi.booking.model.Booking;
-import com.taxi.booking.repository.BookingRepository;
+import org.example.taxiadmin.model.Booking;
+import org.example.taxiadmin.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
