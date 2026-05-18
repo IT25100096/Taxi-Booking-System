@@ -2,10 +2,9 @@ package org.example.taxiadmin.model;
 
 import jakarta.persistence.*;
 
-// Driver entity model
 @Entity
 @Table(name = "drivers")
-public class Driver {
+public class FleetDriver {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +14,9 @@ public class Driver {
     private String licenseNumber;
     private String status;
 
-    public Driver() {}
+    public FleetDriver() {}
 
-    public Driver(String name, String phone, String licenseNumber, String status) {
+    public FleetDriver(String name, String phone, String licenseNumber, String status) {
         this.name = name;
         this.phone = phone;
         this.licenseNumber = licenseNumber;

@@ -1,13 +1,14 @@
-package org.example.taxiadmin.controller;
+package com.taxi.controller;
 
 import com.taxi.model.Driver;
-import org.example.taxiadmin.model.User;
-import org.example.taxiadmin.service.UserService;
+import com.taxi.model.Passenger;
+import com.taxi.model.User;
+import com.taxi.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
@@ -20,12 +21,12 @@ public class UserController {
         return "redirect:/user-login";
     }
 
-    @GetMapping("/login")
+    @GetMapping({"/login", "/user-login"})
     public String showLoginPage() {
         return "user-login";
     }
 
-    @GetMapping("/register")
+    @GetMapping({"/register", "/user-register"})
     public String showRegisterPage() {
         return "user-register";
     }
@@ -84,7 +85,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/passenger/profile")
+    @GetMapping({"/passenger/profile", "/passenger-profile"})
     public String showPassengerProfile(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) return "redirect:/user-login";
@@ -97,7 +98,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/driver/profile")
+    @GetMapping({"/driver/profile", "/driver-profile"})
     public String showDriverProfile(HttpSession session, Model model) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) return "redirect:/user-login";
@@ -114,8 +115,7 @@ public class UserController {
     public String updateProfile(
             @RequestParam String fullName,
             @RequestParam String phone,
-            HttpSession session,
-            Model model) {
+            HttpSession session) {
 
         String userId = (String) session.getAttribute("userId");
         String role = (String) session.getAttribute("role");

@@ -1,7 +1,7 @@
 package org.example.taxiadmin.service;
 
 import org.example.taxiadmin.model.AdminLog;
-import org.example.taxiadmin.model.Driver;
+import org.example.taxiadmin.model.FleetDriver;
 import org.example.taxiadmin.model.Vehicle;
 import org.example.taxiadmin.repository.AdminLogRepository;
 import org.example.taxiadmin.repository.DriverRepository;
@@ -23,27 +23,26 @@ public class AdminService {
     @Autowired
     private AdminLogRepository adminLogRepository;
 
-    // Driver CRUD
-    public List<Driver> getAllDrivers() {
+    public List<FleetDriver> getAllDrivers() {
         return driverRepository.findAll();
     }
 
-    public void addDriver(Driver driver) {
+    public void addDriver(FleetDriver driver) {
         driverRepository.save(driver);
         adminLogRepository.save(new AdminLog("Added driver: " + driver.getName()));
     }
 
-    public Driver getDriverById(int id) {
+    public FleetDriver getDriverById(int id) {
         return driverRepository.findById(id).orElse(null);
     }
 
-    public void updateDriver(Driver driver) {
+    public void updateDriver(FleetDriver driver) {
         driverRepository.save(driver);
         adminLogRepository.save(new AdminLog("Updated driver: " + driver.getName()));
     }
 
     public void deleteDriver(int id) {
-        Driver driver = getDriverById(id);
+        FleetDriver driver = getDriverById(id);
         if (driver != null) {
             List<Vehicle> vehicles = vehicleRepository.findAll();
             for (Vehicle v : vehicles) {
@@ -56,7 +55,6 @@ public class AdminService {
         }
     }
 
-    // Vehicle CRUD
     public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
     }
@@ -83,12 +81,10 @@ public class AdminService {
         }
     }
 
-    // Logs
     public List<AdminLog> getAllLogs() {
         return adminLogRepository.findAll();
     }
 
-    // Stats
     public long countDrivers() { return driverRepository.count(); }
     public long countVehicles() { return vehicleRepository.count(); }
     public long countLogs() { return adminLogRepository.count(); }

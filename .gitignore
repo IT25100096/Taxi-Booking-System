@@ -1,10 +1,7 @@
 HELP.md
 target/
-<<<<<<< HEAD
 .idea/
 *.iml
-=======
->>>>>>> origin/Member-3-Maintenance-&-Safety-Audit
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -36,8 +33,3 @@ build/
 
 ### VS Code ###
 .vscode/
-<<<<<<< HEAD
-
-.env
-=======
->>>>>>> origin/Member-3-Maintenance-&-Safety-Audit

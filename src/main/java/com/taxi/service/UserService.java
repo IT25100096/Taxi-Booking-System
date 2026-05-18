@@ -1,9 +1,9 @@
-package org.example.taxiadmin.service;
+package com.taxi.service;
 
 import com.taxi.model.Driver;
-import org.example.taxiadmin.model.Passenger;
-import org.example.taxiadmin.model.User;
-import org.example.taxiadmin.repository.UserRepository;
+import com.taxi.model.Passenger;
+import com.taxi.model.User;
+import com.taxi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

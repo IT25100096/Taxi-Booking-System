@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @Controller
 @RequestMapping("/reviews")
@@ -15,84 +14,59 @@ public class ReviewWebController {
     @Autowired
     private ReviewService reviewService;
 
-    // read and dashboard view
     @GetMapping
-    public String showDashboard(
-            @RequestParam(defaultValue = "D-N/A") String driverId,
-            @RequestParam(defaultValue = "Unknown Unit") String driverName,
-            @RequestParam(defaultValue = "Guest_User") String passengerName,
+    public String reviews(
+            @RequestParam(required = false) String driverId,
             Model model) {
 
-        List<Review> allReviews = reviewService.getAllReviews();
-        model.addAttribute("allReviews", allReviews);
-
-        //  TYPE LOGIC
-        // Pulls the class name (e.g., PassengerReview) from the last log entry
-        String recentType = "N/A";
-        if (!allReviews.isEmpty()) {
-            recentType = allReviews.get(allReviews.size() - 1).getClass().getSimpleName();
-        }
-        model.addAttribute("recentType", recentType);
-
-        // UI Context for Sidebar/Bottom Bar
-        model.addAttribute("targetDriver", driverId);
-        model.addAttribute("driverName", driverName);
-        model.addAttribute("currentUser", passengerName);
-
-        // --- DYNAMIC AVERAGE FOR "RECENT TRENDS: SATISFACTION" ---
-        // This calculates the math only for the current driverId (D-99, etc.)
-        double avg = reviewService.getAverageRatingForDriver(driverId);
-        model.addAttribute("averageRating", avg);
-
+        String targetDriver = (driverId != null && !driverId.isBlank()) ? driverId : "D-101";
+        model.addAttribute("allReviews", reviewService.getAllReviews());
+        model.addAttribute("targetDriver", targetDriver);
+        model.addAttribute("driverName", "Fleet Driver");
+        model.addAttribute("currentUser", "Passenger");
+        model.addAttribute("avgRating", reviewService.getAverageRatingForDriver(targetDriver));
         return "reviews";
     }
 
-    //   CREATE: ADD NEW LOG
     @PostMapping("/add")
-    public String addReviewFromForm(
+    public String addReview(
             @RequestParam int rating,
             @RequestParam String comment,
-            @RequestParam String driverId,
-            @RequestParam String driverName,
-            @RequestParam String username) {
+            @RequestParam(defaultValue = "D-101") String driverId,
+            @RequestParam(defaultValue = "Fleet Driver") String driverName,
+            @RequestParam(defaultValue = "Passenger") String username) {
 
         reviewService.addPassengerReview(rating, comment, driverId, driverName, username);
-        // Always redirect with params to keep the UI context locked on the driver
-        return "redirect:/reviews?driverId=" + driverId + "&driverName=" + driverName + "&passengerName=" + username;
+        return "redirect:/reviews?driverId=" + driverId;
     }
 
-    // FIX FOR DUPLICATE COMMENTS
     @PostMapping("/update/{id}")
     public String updateReview(
             @PathVariable Integer id,
             @RequestParam int rating,
             @RequestParam String comment,
-            @RequestParam String driverId,
-            @RequestParam String driverName,
-            @RequestParam String username) {
+            @RequestParam(defaultValue = "D-101") String driverId,
+            @RequestParam(defaultValue = "Fleet Driver") String driverName,
+            @RequestParam(defaultValue = "Passenger") String username) {
 
-        // We load the existing entity by ID first.
-        // This ensures JPA performs an UPDATE instead of an INSERT.
         Review existing = reviewService.getReviewById(id);
         if (existing != null) {
             existing.setRating(rating);
             existing.setComment(comment);
-            // The service.saveReview calls repository.save(), which updates the existing row
+            existing.setDriverId(driverId);
+            existing.setDriverName(driverName);
+            existing.setUsername(username);
             reviewService.saveReview(existing);
         }
-
-        return "redirect:/reviews?driverId=" + driverId + "&driverName=" + driverName + "&passengerName=" + username;
+        return "redirect:/reviews?driverId=" + driverId;
     }
 
-    // --- 4. DELETE: REMOVE LOG ---
     @PostMapping("/delete/{id}")
     public String deleteReview(
             @PathVariable Integer id,
-            @RequestParam String driverId,
-            @RequestParam String driverName,
-            @RequestParam String username) {
+            @RequestParam(defaultValue = "D-101") String driverId) {
 
         reviewService.deleteReview(id);
-        return "redirect:/reviews?driverId=" + driverId + "&driverName=" + driverName + "&passengerName=" + username;
+        return "redirect:/reviews?driverId=" + driverId;
     }
 }

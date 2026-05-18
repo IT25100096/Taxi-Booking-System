@@ -14,7 +14,7 @@ public abstract class Review { // ABSTRACTION: Can't create a generic 'Review'
 
     // ENCAPSULATION: Private fields
     private String driverId;    // The unique code (e.g., D-101)
-    private String driverName;  // The name passed
+    private String driverName;  // The name passed from your friend's module
     private String username;    // The name of the registered passenger
     private int rating;
     private String comment;
@@ -39,6 +39,6 @@ public abstract class Review { // ABSTRACTION: Can't create a generic 'Review'
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
 
-    // abstract method
+    // POLYMORPHISM: Each child will provide its own implementation
     public abstract String getFormattedReview();
 }
